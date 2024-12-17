@@ -10,10 +10,11 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "student")
 public class Student {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // IDENTITY daha net bir seçim
     @Column(name = "student_id", length = 11)
-    private int studentId; // Alan adı düzenlendi
+    private int studentId;
 
     @Column(name = "student_name", length = 45)
     private String studentName;
@@ -21,7 +22,7 @@ public class Student {
     @Column(name = "address", length = 60)
     private String address;
 
-    @Column(name = "phone", length = 12)
+    @Column(name = "phone", length = 15)  // Telefon numarası için esneklik sağlandı
     private String phone;
 
     // Parametresiz constructor
@@ -30,7 +31,7 @@ public class Student {
 
     // Tüm alanları alan constructor
     public Student(int studentId, String studentName, String address, String phone) {
-        this.studentId = studentId; // Düzgün alan adı kullanımı
+        this.studentId = studentId;
         this.studentName = studentName;
         this.address = address;
         this.phone = phone;
@@ -44,11 +45,11 @@ public class Student {
     }
 
     // Getter ve Setter metodları
-    public int getStudentId() { // Düzgün getter
+    public int getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(int studentId) { // Düzgün setter
+    public void setStudentId(int studentId) {
         this.studentId = studentId;
     }
 
@@ -80,7 +81,7 @@ public class Student {
     @Override
     public String toString() {
         return "Student{" +
-                "studentId=" + studentId + // Düzenlendi
+                "studentId=" + studentId +
                 ", studentName='" + studentName + '\'' +
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
