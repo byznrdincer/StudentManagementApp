@@ -4,19 +4,15 @@ public class CourseUpdateDTO {
 
     private int courseid;
     private String coursename;
-    private String syllabus;
-    private String duration;
 
     // No-argument constructor
     public CourseUpdateDTO() {
     }
 
     // All-argument constructor
-    public CourseUpdateDTO(int courseid, String coursename, String syllabus, String duration) {
+    public CourseUpdateDTO(int courseid, String coursename) {
         this.courseid = courseid;
         this.coursename = coursename;
-        this.syllabus = syllabus;
-        this.duration = duration;
     }
 
     // Getters and Setters
@@ -36,30 +32,12 @@ public class CourseUpdateDTO {
         this.coursename = coursename;
     }
 
-    public String getSyllabus() {
-        return syllabus;
-    }
-
-    public void setSyllabus(String syllabus) {
-        this.syllabus = syllabus;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
     // toString method
     @Override
     public String toString() {
         return "CourseUpdateDTO{" +
                 "courseid=" + courseid +
                 ", coursename='" + coursename + '\'' +
-                ", syllabus='" + syllabus + '\'' +
-                ", duration='" + duration + '\'' +
                 '}';
     }
 
@@ -72,18 +50,13 @@ public class CourseUpdateDTO {
         CourseUpdateDTO that = (CourseUpdateDTO) o;
 
         if (courseid != that.courseid) return false;
-        if (coursename != null ? !coursename.equals(that.coursename) : that.coursename != null) return false;
-        if (syllabus != null ? !syllabus.equals(that.syllabus) : that.syllabus != null) return false;
-        return duration != null ? duration.equals(that.duration) : that.duration == null;
+        return coursename != null ? coursename.equals(that.coursename) : that.coursename == null;
     }
 
     @Override
     public int hashCode() {
         int result = courseid;
         result = 31 * result + (coursename != null ? coursename.hashCode() : 0);
-        result = 31 * result + (syllabus != null ? syllabus.hashCode() : 0);
-        result = 31 * result + (duration != null ? duration.hashCode() : 0);
         return result;
     }
 }
-

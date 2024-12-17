@@ -17,10 +17,9 @@ public class Batch {
     @Column(name = "start_date", length = 12)
     private String startdate;
 
-    @ManyToOne(fetch = FetchType.EAGER)  // EAGER fetching
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
-
     public Batch(int batchid, String batchname, String startdate, Course course) {
         this.batchid = batchid;
         this.batchname = batchname;

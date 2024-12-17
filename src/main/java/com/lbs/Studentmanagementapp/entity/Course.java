@@ -4,40 +4,30 @@ import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name="course")
+@Table(name = "course")
 public class Course {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Eğer otomatik artan bir ID kullanıyorsanız
-    @Column(name="course_id", length = 11)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Eğer otomatik artan bir ID kullanıyorsanız
+    @Column(name = "course_id", length = 11)
     private int courseid;
 
-    @Column(name="course_name", length = 45)
+    @Column(name = "course_name", length = 45)
     private String coursename;
 
-    @Column(name="syllabus", length = 60)
-    private String syllabus;
-
-    @Column(name="duration", length = 12)
-    private String duration;
-
     @OneToMany(mappedBy = "course")
-    private Set<Batch> batches;  // Set yerine List kullanılabilir
+    private Set<Batch> batches; // Set yerine List kullanılabilir
 
     public Course() {
     }
 
-    public Course(String coursename, String syllabus, String duration) {
+    public Course(String coursename) {
         this.coursename = coursename;
-        this.syllabus = syllabus;
-        this.duration = duration;
     }
 
-    public Course(int courseid, String coursename, String syllabus, String duration) {
+    public Course(int courseid, String coursename) {
         this.courseid = courseid;
         this.coursename = coursename;
-        this.syllabus = syllabus;
-        this.duration = duration;
     }
 
     public int getCourseid() {
@@ -56,22 +46,6 @@ public class Course {
         this.coursename = coursename;
     }
 
-    public String getSyllabus() {
-        return syllabus;
-    }
-
-    public void setSyllabus(String syllabus) {
-        this.syllabus = syllabus;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
     public Set<Batch> getBatches() {
         return batches;
     }
@@ -85,8 +59,6 @@ public class Course {
         return "Course{" +
                 "courseid=" + courseid +
                 ", coursename='" + coursename + '\'' +
-                ", syllabus='" + syllabus + '\'' +
-                ", duration='" + duration + '\'' +
                 '}';
     }
 }

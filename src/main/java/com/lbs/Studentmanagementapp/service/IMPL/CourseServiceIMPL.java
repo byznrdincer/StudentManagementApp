@@ -21,10 +21,9 @@ public class CourseServiceIMPL implements CourseService {
 
     @Override
     public String addCourse(CourseSaveDTO courseSaveDTO) {
+        // syllabus ve duration alanları kullanılmadığı için kaldırıldı
         Course course = new Course(
-                courseSaveDTO.getCoursename(),
-                courseSaveDTO.getSyllabus(),
-                courseSaveDTO.getDuration()
+                courseSaveDTO.getCoursename()
         );
         courseRepo.save(course);
         return course.getCoursename(); // Kurs adı döndürülüyor
@@ -35,11 +34,10 @@ public class CourseServiceIMPL implements CourseService {
         List<Course> getCourses = courseRepo.findAll();
         List<CourseDTO> courseDTOList = new ArrayList<>();
         for (Course course : getCourses) {
+            // syllabus ve duration alanları kullanılmadığı için kaldırıldı
             CourseDTO courseDTO = new CourseDTO(
                     course.getCourseid(),
-                    course.getCoursename(),
-                    course.getSyllabus(),
-                    course.getDuration()
+                    course.getCoursename()
             );
             courseDTOList.add(courseDTO);
         }
@@ -51,9 +49,7 @@ public class CourseServiceIMPL implements CourseService {
         Optional<Course> optionalCourse = courseRepo.findById(courseUpdateDTO.getCourseid());
         if (optionalCourse.isPresent()) {
             Course course = optionalCourse.get();
-            course.setCoursename(courseUpdateDTO.getCoursename());
-            course.setSyllabus(courseUpdateDTO.getSyllabus());
-            course.setDuration(courseUpdateDTO.getDuration());
+            course.setCoursename(courseUpdateDTO.getCoursename()); // sadece course adı güncelleniyor
 
             courseRepo.save(course);
             return course.getCoursename(); // Güncellenmiş kurs adı döndürülüyor

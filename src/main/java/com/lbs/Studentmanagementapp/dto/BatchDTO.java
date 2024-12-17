@@ -3,7 +3,6 @@ package com.lbs.Studentmanagementapp.dto;
 import com.lbs.Studentmanagementapp.entity.Course;
 
 public class BatchDTO {
-
     private int batchid;
     private String batchname;
     private CourseDTO course; // CourseDTO kullanılıyor
@@ -19,6 +18,11 @@ public class BatchDTO {
 
     // Parametresiz constructor
     public BatchDTO(int batchid, String batchname, Course course, String startdate) {
+        this.batchid = batchid;
+        this.batchname = batchname;
+        // Course nesnesini CourseDTO'ya çevirme
+        this.course = new CourseDTO(course.getCourseid(), course.getCoursename()); // course.getCoursename() gereksinimlerinize göre değişebilir
+        this.startdate = startdate;
     }
 
     // Getter ve Setter metodları

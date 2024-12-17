@@ -26,15 +26,15 @@ public class BatchServiceIMPL implements BatchService {
 
     @Override
     public String addBatch(BatchSaveDTO batchSaveDTO) {
-        Optional<Course> course = courseRepo.findById(batchSaveDTO.getCourseid());
-        if (!course.isPresent()) {
+        Optional<Course> courseOptional = courseRepo.findById(batchSaveDTO.getCourseid());
+        if (!courseOptional.isPresent()) {
             return "Course not found";
         }
 
         Batch batch = new Batch(
                 batchSaveDTO.getBatchname(),
                 batchSaveDTO.getStartdate(),
-                course.get()
+                courseOptional.get() // Optional'dan alınan Course nesnesi
         );
         batchRepo.save(batch);
         return batch.getBatchname();
@@ -48,7 +48,7 @@ public class BatchServiceIMPL implements BatchService {
             BatchDTO batchDTO = new BatchDTO(
                     batch.getBatchid(),
                     batch.getBatchname(),
-                    batch.getCourse(),
+                    batch.getCourse(), // Course nesnesinin DTO'ya dönüştürülmesi
                     batch.getStartdate()
             );
             batchDTOList.add(batchDTO);
@@ -58,22 +58,18 @@ public class BatchServiceIMPL implements BatchService {
 
     @Override
     public String updateBatch(BatchUpdateDTO batchUpdateDTO) {
-        Optional<Batch> batchOptional = batchRepo.findById(batchUpdateDTO.getBatchid());
-        if (!batchOptional.isPresent()) {
-            return "Batch ID not found";
-        }
-
-        Batch batch = batchOptional.get();
-        batch.setBatchname(batchUpdateDTO.getBatchname());
-        Optional<Course> course = courseRepo.findById(batchUpdateDTO.getCourseid());
-        if (!course.isPresent()) {
-            return "Course ID not found";
-        }
-        batch.setCourse(course.get());
-        batch.setStartdate(batchUpdateDTO.getStartdate());
-
-        batchRepo.save(batch);
-        return batch.getBatchname();
+        return batchRepo.findById(batchUpdateDTO.getBatchid())
+                .map(batch -> {
+                    batch.setBatchname(batchUpdateDTO.getBatchname());
+                    Optional<Course> courseOptional = courseRepo.findById(batchUpdateDTO.getCourseid());
+                    if (!courseOptional.isPresent()) {
+                        return "Course ID not found";
+                    }
+                    batch.setCourse(courseOptional.get());
+                    batch.setStartdate(batchUpdateDTO.getStartdate());
+                    batchRepo.save(batch);
+                    return batch.getBatchname();
+                }).orElse("Batch ID not found");
     }
 
     @Override

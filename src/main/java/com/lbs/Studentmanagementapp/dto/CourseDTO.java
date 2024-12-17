@@ -1,13 +1,13 @@
 package com.lbs.Studentmanagementapp.dto;
 
 public class CourseDTO {
-    private int courseId;
-    private String courseName;
+    private int courseId;          // Dersi temsil eden benzersiz kimlik
+    private String courseName;     // Dersin adı
 
     // Parametreli constructor
-    public CourseDTO(int courseId, String coursename, String syllabus, String courseName) {
+    public CourseDTO(int courseId, String courseName) {
         this.courseId = courseId;
-        this.courseName = courseName;
+        setCourseName(courseName); // Setter'ı kullanarak atama yapıyoruz
     }
 
     // Getter ve Setter metodları
@@ -24,6 +24,10 @@ public class CourseDTO {
     }
 
     public void setCourseName(String courseName) {
+        // Geçersiz değer kontrolü
+        if (courseName == null || courseName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Course name cannot be null or empty");
+        }
         this.courseName = courseName;
     }
 
@@ -35,4 +39,3 @@ public class CourseDTO {
                 '}';
     }
 }
-

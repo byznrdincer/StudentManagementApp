@@ -35,7 +35,7 @@ public class TeacherController {
     public String updateTeacher(@RequestBody TeacherUpdateDTO teacherUpdateDTO) {
         String teacherName = teacherService.updateTeacher(teacherUpdateDTO);
         if (teacherName != null) {
-            return "Teacher " + teacherName + " updated successfully!";
+            return "Teacher " + teacherName ;
         } else {
             return "Teacher ID not found!";
         }

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Öğrenci Listesi</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/cosmo/bootstrap.min.css" />
+  <style>
+    body {
+      background-color: #f4f4f9;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .container {
+      margin-top: 50px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .alert {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f44336;
+      color: white;
+      border-radius: 5px;
+    }
+
+    .back-btn {
+      margin-top: 30px;
+      display: block;
+      width: 200px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+  <h2>Öğrenci Listesi</h2>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Öğrenci ID</th>
+      <th>Öğrenci Adı</th>
+      <th>Adres</th>
+      <th>Telefon</th>
+    </tr>
+    </thead>
+    <tbody id="studentsList">
+    <!-- Öğrenci verileri burada gösterilecek -->
+    </tbody>
+  </table>
+  <div id="errorMessage" class="alert" style="display: none;"></div>
+
+  <!-- Geri Dönüş Butonu -->
+  <a href="Home.html" class="back-btn">Ana Sayfaya Dön</a>
+</div>
+
+<script>
+  window.onload = function() {
+    fetch('https://8e8a6c5f-003d-46f7-b8fa-29e3deb497cc.mock.pstmn.io/api/v1/student/getAllStudents', {
+      method: 'GET',
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Ağ isteği başarısız oldu');
+      }
+      return response.json();
+    })
+    .then(data => {
+      let studentsList = document.getElementById('studentsList');
+      data.forEach(student => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${student.studentId}</td>
+          <td>${student.studentName}</td>
+          <td>${student.address}</td>
+          <td>${student.phone}</td>
+        `;
+        studentsList.appendChild(row);
+      });
+    })
+    .catch(error => {
+      console.error('Hata:', error);
+      const errorMessage = document.getElementById('errorMessage');
+      errorMessage.textContent = 'Öğrenciler çekilirken bir hata oluştu: ' + error.message;
+      errorMessage.style.display = 'block';
+    });
+  };
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Öğretmen Listesi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cosmo/bootstrap.min.css" />
+    <style>
+        body {
+          background-color: #f8f9fa;
+        }
+        .container {
+          background-color: #ffffff;
+          padding: 30px;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        table {
+          margin-top: 20px;
+          border-collapse: collapse;
+        }
+        th, td {
+          padding: 12px 15px;
+          text-align: center;
+        }
+        th {
+          background-color: #007bff;
+          color: white;
+        }
+        td {
+          background-color: #f1f1f1;
+          border-bottom: 1px solid #ddd;
+        }
+        h2 {
+          color: #007bff;
+          text-align: center;
+          margin-bottom: 30px;
+        }
+
+        .back-btn {
+          margin-top: 30px;
+          display: block;
+          width: 200px;
+          margin-left: auto;
+          margin-right: auto;
+          text-align: center;
+          padding: 10px;
+          background-color: #007bff;
+          color: white;
+          border-radius: 5px;
+          text-decoration: none;
+        }
+
+        .back-btn:hover {
+          background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Öğretmen Listesi</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Öğretmen ID</th>
+            <th>Öğretmen Adı</th>
+            <th>Adres</th>
+            <th>Telefon</th>
+        </tr>
+        </thead>
+        <tbody id="teachersList">
+        <!-- Öğretmen verileri burada gösterilecek -->
+        </tbody>
+    </table>
+
+    <!-- Geri Dönüş Butonu -->
+    <a href="Home.html" class="back-btn">Ana Sayfaya Dön</a>
+</div>
+
+<script>
+    window.onload = function() {
+      fetch('https://8e8a6c5f-003d-46f7-b8fa-29e3deb497cc.mock.pstmn.io/api/v1/teacher/getAllTeachers', {
+        method: 'GET',
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Ağ isteği başarısız oldu');
+        }
+        return response.json();
+      })
+      .then(data => {
+        let teachersList = document.getElementById('teachersList');
+        data.forEach(teacher => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${teacher.teacherid}</td>
+            <td>${teacher.teachername}</td>
+            <td>${teacher.address}</td>
+            <td>${teacher.phone}</td>
+          `;
+          teachersList.appendChild(row);
+        });
+      })
+      .catch(error => {
+        console.error('Hata:', error);
+        alert('Öğretmenler çekilirken bir hata oluştu: ' + error.message);
+      });
+    };
+</script>
+</body>
+</html>
