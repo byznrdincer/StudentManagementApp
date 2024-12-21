@@ -1,6 +1,7 @@
 package com.lbs.Studentmanagementapp.service;
 
 import com.lbs.Studentmanagementapp.dto.TeacherDTO;
+import com.lbs.Studentmanagementapp.dto.TeacherLoginDTO;
 import com.lbs.Studentmanagementapp.dto.TeacherSaveDTO;
 import com.lbs.Studentmanagementapp.dto.TeacherUpdateDTO;
 
@@ -12,6 +13,7 @@ public interface TeacherService {
     List<TeacherDTO> getAllTeachers();
 
     String updateTeacher(TeacherUpdateDTO teacherUpdateDTO);
+    boolean validateTeacherLogin(TeacherLoginDTO teacherLoginDTO);
 
     boolean deleteTeacher(int id);
 }

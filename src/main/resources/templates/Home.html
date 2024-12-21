@@ -2,23 +2,71 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cosmo/bootstrap.min.css" />
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to bottom right, #74b9ff, #81ecec);
+      color: #2d3436;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      text-align: center;
+      background: #ffffff;
+      padding: 2rem 3rem;
+      border-radius: 15px;
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #0984e3;
+    }
+    .lead {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #636e72;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #ffffff;
+      background: #a29bfe;
+      border: none;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      margin: 0.5rem;
+    }
+    .btn:hover {
+      background: #dfe6e9;
+      color: #2d3436;
+      transform: translateY(-3px);
+      box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+    }
+  </style>
 </head>
 <body>
-<div class="container text-center mt-5">
+<div class="container">
   <h1>StudentManagementApp</h1>
   <p class="lead">Please choose an option:</p>
-  <div class="mt-4">
-    <!-- Öğrenciler Sayfası Linki -->
-    <a href="OgrenciListesi.html" class="btn btn-primary btn-lg">Öğrenciler</a>
-    <!-- Öğretmenler Sayfası Linki -->
-    <a href="OgretmenListesi.html" class="btn btn-info btn-lg ml-3">Öğretmenler</a>
-    <a href="OgretmenListesi.html" class="btn btn-info btn-lg ml-3">Kayıtlar</a>
-    <a href="OgretmenListesi.html" class="btn btn-info btn-lg ml-3">Ders grupları</a>
-    <!-- Giriş Yap Linki -->
-    <a href="login.html" class="btn btn-warning btn-lg ml-3">Login</a> <!-- Login butonunu burada ekliyoruz -->
+  <div>
+    <a href="OgrenciListesi.html" class="btn">Öğrenciler</a>
+    <a href="OgretmenListesi.html" class="btn">Öğretmenler</a>
+    <a href="Kayıtlar.html" class="btn">Kayıtlar</a>
+    <a href="DersGrupları.html" class="btn">Ders grupları</a>
+    <a href="Dersler.html" class="btn">Dersler</a>
+    <a href="login.html" class="btn">Login</a>
   </div>
 </div>
 </body>

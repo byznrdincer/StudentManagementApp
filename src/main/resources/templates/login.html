@@ -110,116 +110,197 @@
 
 <script>
     $(document).ready(function() {
-      // Varsayılan olarak Öğrenci Giriş Formu gösterilsin
-      $('#studentForm').show();
-      $('#teacherForm').hide();
-      $('#studentRegisterForm').hide();
-      $('#teacherRegisterForm').hide();
+    // Varsayılan olarak Öğrenci Giriş Formu gösterilsin
+    $('#studentForm').show();
+    $('#teacherForm').hide();
+    $('#studentRegisterForm').hide();
+    $('#teacherRegisterForm').hide();
 
-      // Öğrenci Girişi Butonu
-      $('#studentBtn').click(function() {
+    // Öğrenci Girişi Butonu
+    $('#studentBtn').click(function() {
         $('#studentForm').show();
         $('#teacherForm').hide();
         $('#studentRegisterForm').hide();
         $('#teacherRegisterForm').hide();
-      });
+    });
 
-      // Öğretmen Girişi Butonu
-      $('#teacherBtn').click(function() {
+    // Öğretmen Girişi Butonu
+    $('#teacherBtn').click(function() {
         $('#teacherForm').show();
         $('#studentForm').hide();
         $('#studentRegisterForm').hide();
         $('#teacherRegisterForm').hide();
-      });
+    });
 
-      // Öğrenci Kayıt Ol Butonu
-      $('#studentRegisterBtn').click(function() {
+    // Öğrenci Kayıt Ol Butonu
+    $('#studentRegisterBtn').click(function() {
         $('#studentRegisterForm').show();
         $('#studentForm').hide();
         $('#teacherForm').hide();
         $('#teacherRegisterForm').hide();
-      });
+    });
 
-      // Öğretmen Kayıt Ol Butonu
-      $('#teacherRegisterBtn').click(function() {
+    // Öğretmen Kayıt Ol Butonu
+    $('#teacherRegisterBtn').click(function() {
         $('#teacherRegisterForm').show();
         $('#studentForm').hide();
         $('#teacherForm').hide();
         $('#studentRegisterForm').hide();
-      });
+    });
 
-      // Öğrenci Kayıt Formu Submit (fetch ile)
-      $('#studentRegisterFormContent').submit(function(e) {
+    // Öğrenci Giriş Formu Submit
+    $('#studentLoginForm').submit(function(e) {
         e.preventDefault();
 
         const studentData = {
-          studentName: $('#studentRegisterName').val(),
-          address: $('#studentAddress').val(),
-          phone: $('#studentPhone').val()
+            studentName: $('#studentName').val(),
+            studentId: $('#studentPassword').val() // Burada studentId kullanıyoruz
+        };
+
+        // Öğrenci Giriş API çağrısı
+        fetch('http://localhost:8081/api/v1/student/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(studentData),
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error('API Yanıtı Hatası: ' + error.message);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Giriş başarılıysa yönlendir
+            if (data.message === "Giriş başarılı!") {
+                window.location.href = "Student.html"; // Öğrenci sayfasına yönlendir
+            } else {
+                alert(data.message); // Hata mesajını kullanıcıya göster
+            }
+        })
+        .catch((error) => {
+            alert('Öğrenci girişi sırasında hata oluştu: ' + error.message);
+            console.error('Error:', error);
+        });
+    });
+
+    // Öğretmen Giriş Formu Submit
+    $('#teacherLoginForm').submit(function(e) {
+        e.preventDefault();
+
+        const teacherData = {
+            teacherName: $('#teacherName').val(),
+            teacherId: $('#teacherPassword').val() // Burada teacherId kullanıyoruz
+        };
+
+        // Öğretmen Giriş API çağrısı
+        fetch('http://localhost:8081/api/v1/teacher/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(teacherData),
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error('API Yanıtı Hatası: ' + error.message);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Giriş başarılıysa yönlendir
+            if (data.message === "Giriş başarılı!") {
+                window.location.href = "Teacher.html"; // Öğretmen sayfasına yönlendir
+            } else {
+                alert(data.message); // Hata mesajını kullanıcıya göster
+            }
+        })
+        .catch((error) => {
+            alert('Öğretmen girişi sırasında hata oluştu: ' + error.message);
+            console.error('Error:', error);
+        });
+    });
+
+    // Öğrenci Kayıt Formu Submit (fetch ile)
+    $('#studentRegisterFormContent').submit(function(e) {
+        e.preventDefault();
+
+        const studentData = {
+            studentName: $('#studentRegisterName').val(),
+            address: $('#studentAddress').val(),
+            phone: $('#studentPhone').val()
         };
 
         // fetch ile öğrenci verisini gönder
         fetch('http://localhost:8081/api/v1/student/save', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(studentData),
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(studentData),
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error('API Yanıtı Hatası: ' + error.message);
+                });
+            }
+            return response.json();
+        })
         .then(data => {
-          alert('Öğrenci kaydı başarılı!');
-          $('#studentRegisterForm').hide();
-          $('#studentForm').show();
+            alert('Öğrenci kaydı başarılı!');
+            $('#studentRegisterForm').hide();
+            $('#studentForm').show();
         })
         .catch((error) => {
-          alert('Öğrenci kaydı sırasında hata oluştu!');
-          console.error('Error:', error);
+            alert('Öğrenci kaydı sırasında hata oluştu: ' + error.message);
+            console.error('Error:', error);
         });
-      });
+    });
 
-      // Öğretmen Kayıt Formu Submit (fetch ile)
-      $('#teacherRegisterFormContent').submit(function(e) {
+    // Öğretmen Kayıt Formu Submit (fetch ile)
+    $('#teacherRegisterFormContent').submit(function(e) {
         e.preventDefault();
 
         const teacherData = {
-          teachername: $('#teacherRegisterName').val(),
-          address: $('#teacherAddress').val(),
-          phone: $('#teacherPhone').val()
+            teachername: $('#teacherRegisterName').val(),
+            address: $('#teacherAddress').val(),
+            phone: $('#teacherPhone').val()
         };
 
         // fetch ile öğretmen verisini gönder
         fetch('http://localhost:8081/api/v1/teacher/save', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(teacherData),
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(teacherData),
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error('API Yanıtı Hatası: ' + error.message);
+                });
+            }
+            return response.json();
+        })
         .then(data => {
-          alert('Öğretmen kaydı başarılı!');
-          $('#teacherRegisterForm').hide();
-          $('#teacherForm').show();
+            alert('Öğretmen kaydı başarılı!');
+            $('#teacherRegisterForm').hide();
+            $('#teacherForm').show();
         })
         .catch((error) => {
-          alert('Öğretmen kaydı sırasında hata oluştu!');
-          console.error('Error:', error);
+            alert('Öğretmen kaydı sırasında hata oluştu: ' + error.message);
+            console.error('Error:', error);
         });
-      });
-
-      // Öğrenci Giriş Formu Submit
-      $('#studentLoginForm').submit(function(e) {
-        e.preventDefault();
-        alert('Öğrenci Girişi Başarılı!');
-      });
-
-      // Öğretmen Giriş Formu Submit
-      $('#teacherLoginForm').submit(function(e) {
-        e.preventDefault();
-        alert('Öğretmen Girişi Başarılı!');
-      });
     });
+});
+
 </script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package com.lbs.Studentmanagementapp.service.IMPL;
 
 import com.lbs.Studentmanagementapp.dto.TeacherDTO;
+import com.lbs.Studentmanagementapp.dto.TeacherLoginDTO;
 import com.lbs.Studentmanagementapp.dto.TeacherSaveDTO;
 import com.lbs.Studentmanagementapp.dto.TeacherUpdateDTO;
 import com.lbs.Studentmanagementapp.entity.Teacher;
@@ -64,6 +65,11 @@ public class TeacherServiceIMPL implements TeacherService {
         }
     }
 
+    @Override
+    public boolean validateTeacherLogin(TeacherLoginDTO teacherLoginDTO) {
+        Optional<Teacher> teacherOpt = teacherRepo.findById(teacherLoginDTO.getTeacherId());
+        return teacherOpt.isPresent(); // Öğretmen ID'si varsa giriş başarılı
+    }
     // Öğretmen silme
     @Override
     public boolean deleteTeacher(int id) {

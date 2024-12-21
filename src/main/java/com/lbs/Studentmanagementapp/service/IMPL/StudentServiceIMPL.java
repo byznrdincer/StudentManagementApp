@@ -64,8 +64,9 @@ public class StudentServiceIMPL implements StudentService {
 
     @Override
     public boolean validateStudentLogin(StudentLoginDTO studentLoginDTO) {
-        // Giriş doğrulamak için gereken kod
-        return true; // (Başarıyla doğrulandığında true döndür)
+        Optional<Student> student = studentRepo.findByStudentNameAndStudentId(studentLoginDTO.getStudentName(), studentLoginDTO.getStudentId());
+
+        return student.isPresent(); // Öğrenci bulunursa true döner
     }
 
     @Override
