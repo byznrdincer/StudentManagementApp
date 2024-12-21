@@ -22,10 +22,15 @@ public class TeacherController {
 
     // Öğretmen kaydetme
     @PostMapping(path = "/save")
-    public String saveTeacher(@RequestBody TeacherSaveDTO teacherSaveDTO) {
+    public ResponseEntity<String> saveTeacher(@RequestBody TeacherSaveDTO teacherSaveDTO) {
         String teacherName = teacherService.addTeacher(teacherSaveDTO);
-        return "Teacher " + teacherName + " added successfully!";
+        if (teacherName != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body("{\"message\": \"Teacher " + teacherName + " added successfully!\"}");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"Failed to add teacher\"}");
+        }
     }
+
 
     // Öğretmen giriş
     @PostMapping("/login")

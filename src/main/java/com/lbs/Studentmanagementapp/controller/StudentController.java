@@ -23,16 +23,19 @@ public class StudentController {
     private StudentService studentService;
 
     // Öğrenci giriş doğrulama
-
-    @ResponseBody
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody StudentLoginDTO loginDTO) {
-        // Giriş işlemleri
-        return ResponseEntity.ok(new HashMap<String, String>() {{
-            put("message", "Giriş başarılı!");
-        }});
-    }
+    public ResponseEntity<Map<String, String>> loginStudent(@RequestBody StudentLoginDTO studentLoginDTO) {
+        boolean isValid = studentService.validateStudentLogin(studentLoginDTO);
 
+        Map<String, String> response = new HashMap<>();
+        if (isValid) {
+            response.put("message", "Giriş başarılı!");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("message", "Geçersiz kullanıcı adı veya ID");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+    }
 
     @PostMapping(path = "/save")
     public ResponseEntity<Map<String, String>> saveStudent(@RequestBody StudentSaveDTO studentSaveDTO) {
