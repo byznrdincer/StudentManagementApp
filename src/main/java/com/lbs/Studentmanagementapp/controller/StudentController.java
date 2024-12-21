@@ -5,6 +5,7 @@ import com.lbs.Studentmanagementapp.dto.StudentSaveDTO;
 import com.lbs.Studentmanagementapp.dto.StudentUpdateDTO;
 import com.lbs.Studentmanagementapp.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,11 @@ public class StudentController {
     {
         String stname =studentService.addStudent(studentSaveDTO);
         return stname;
+    }
+    @GetMapping("/students/{id}")
+    public ResponseEntity<StudentDTO> getStudentInfo(@PathVariable Long id) {
+        StudentDTO studentDTO = studentService.findById(id);
+        return ResponseEntity.ok(studentDTO);
     }
 
     @GetMapping("/getAllStudents")

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cosmo/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+          background-color: #f8f9fa;
+        }
+        .container {
+          background-color: #ffffff;
+          padding: 30px;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          margin-top: 50px;
+        }
+        h2 {
+          color: #007bff;
+          text-align: center;
+          margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Giriş Yap</h2>
+    <!-- Öğrenci ve Öğretmen Seçim Butonları -->
+    <div class="text-center mb-4">
+        <button id="studentBtn" class="btn btn-primary">Öğrenci Girişi</button>
+        <button id="teacherBtn" class="btn btn-info ml-3">Öğretmen Girişi</button>
+    </div>
+
+    <!-- Öğrenci Giriş Formu -->
+    <div id="studentForm" class="form-container">
+        <h4>Öğrenci Girişi</h4>
+        <form id="studentLoginForm">
+            <div class="form-group">
+                <label for="studentName">Öğrenci Adı</label>
+                <input type="text" id="studentName" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="studentPassword">Şifre</label>
+                <input type="password" id="studentPassword" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Giriş Yap</button>
+            <button type="button" id="studentRegisterBtn" class="btn btn-link btn-block">Kayıt Ol</button>
+        </form>
+    </div>
+
+    <!-- Öğretmen Giriş Formu -->
+    <div id="teacherForm" class="form-container" style="display: none;">
+        <h4>Öğretmen Girişi</h4>
+        <form id="teacherLoginForm">
+            <div class="form-group">
+                <label for="teacherName">Öğretmen Adı</label>
+                <input type="text" id="teacherName" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="teacherPassword">Şifre</label>
+                <input type="password" id="teacherPassword" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-info btn-block">Giriş Yap</button>
+            <button type="button" id="teacherRegisterBtn" class="btn btn-link btn-block">Kayıt Ol</button>
+        </form>
+    </div>
+
+    <!-- Kayıt Formu (Öğrenci için) -->
+    <div id="studentRegisterForm" style="display: none;">
+        <h4>Öğrenci Kaydı</h4>
+        <form id="studentRegisterFormContent">
+            <div class="form-group">
+                <label for="studentRegisterName">Öğrenci Adı</label>
+                <input type="text" id="studentRegisterName" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="studentAddress">Adres</label>
+                <input type="text" id="studentAddress" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="studentPhone">Telefon</label>
+                <input type="text" id="studentPhone" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success btn-block">Kaydı Tamamla</button>
+        </form>
+    </div>
+
+    <!-- Kayıt Formu (Öğretmen için) -->
+    <div id="teacherRegisterForm" style="display: none;">
+        <h4>Öğretmen Kaydı</h4>
+        <form id="teacherRegisterFormContent">
+            <div class="form-group">
+                <label for="teacherRegisterName">Öğretmen Adı</label>
+                <input type="text" id="teacherRegisterName" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="teacherAddress">Adres</label>
+                <input type="text" id="teacherAddress" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="teacherPhone">Telefon</label>
+                <input type="text" id="teacherPhone" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success btn-block">Kaydı Tamamla</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+      // Varsayılan olarak Öğrenci Giriş Formu gösterilsin
+      $('#studentForm').show();
+      $('#teacherForm').hide();
+      $('#studentRegisterForm').hide();
+      $('#teacherRegisterForm').hide();
+
+      // Öğrenci Girişi Butonu
+      $('#studentBtn').click(function() {
+        $('#studentForm').show();
+        $('#teacherForm').hide();
+        $('#studentRegisterForm').hide();
+        $('#teacherRegisterForm').hide();
+      });
+
+      // Öğretmen Girişi Butonu
+      $('#teacherBtn').click(function() {
+        $('#teacherForm').show();
+        $('#studentForm').hide();
+        $('#studentRegisterForm').hide();
+        $('#teacherRegisterForm').hide();
+      });
+
+      // Öğrenci Kayıt Ol Butonu
+      $('#studentRegisterBtn').click(function() {
+        $('#studentRegisterForm').show();
+        $('#studentForm').hide();
+        $('#teacherForm').hide();
+        $('#teacherRegisterForm').hide();
+      });
+
+      // Öğretmen Kayıt Ol Butonu
+      $('#teacherRegisterBtn').click(function() {
+        $('#teacherRegisterForm').show();
+        $('#studentForm').hide();
+        $('#teacherForm').hide();
+        $('#studentRegisterForm').hide();
+      });
+
+      // Öğrenci Kayıt Formu Submit (fetch ile)
+      $('#studentRegisterFormContent').submit(function(e) {
+        e.preventDefault();
+
+        const studentData = {
+          studentName: $('#studentRegisterName').val(),
+          address: $('#studentAddress').val(),
+          phone: $('#studentPhone').val()
+        };
+
+        // fetch ile öğrenci verisini gönder
+        fetch('http://localhost:8081/api/v1/student/save', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(studentData),
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert('Öğrenci kaydı başarılı!');
+          $('#studentRegisterForm').hide();
+          $('#studentForm').show();
+        })
+        .catch((error) => {
+          alert('Öğrenci kaydı sırasında hata oluştu!');
+          console.error('Error:', error);
+        });
+      });
+
+      // Öğretmen Kayıt Formu Submit (fetch ile)
+      $('#teacherRegisterFormContent').submit(function(e) {
+        e.preventDefault();
+
+        const teacherData = {
+          teachername: $('#teacherRegisterName').val(),
+          address: $('#teacherAddress').val(),
+          phone: $('#teacherPhone').val()
+        };
+
+        // fetch ile öğretmen verisini gönder
+        fetch('http://localhost:8081/api/v1/teacher/save', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(teacherData),
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert('Öğretmen kaydı başarılı!');
+          $('#teacherRegisterForm').hide();
+          $('#teacherForm').show();
+        })
+        .catch((error) => {
+          alert('Öğretmen kaydı sırasında hata oluştu!');
+          console.error('Error:', error);
+        });
+      });
+
+      // Öğrenci Giriş Formu Submit
+      $('#studentLoginForm').submit(function(e) {
+        e.preventDefault();
+        alert('Öğrenci Girişi Başarılı!');
+      });
+
+      // Öğretmen Giriş Formu Submit
+      $('#teacherLoginForm').submit(function(e) {
+        e.preventDefault();
+        alert('Öğretmen Girişi Başarılı!');
+      });
+    });
+</script>
+</body>
+</html>

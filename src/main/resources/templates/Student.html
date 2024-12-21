@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <style>
+    /* Genel Sayfa Stilleri */
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f4f8; /* Açık gri-mavi tonları */
+        color: #333;
+    }
+
+    /* Öğrenci Bilgileri Alanı */
+    #studentInfo, #studentCourses, #addCourseForm {
+        width: 80%;
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #fff; /* Beyaz arka plan */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+        border-radius: 8px;
+    }
+
+    /* Başlık Stili */
+    h2 {
+        text-align: center;
+        font-size: 2em;
+        color: #4b9cd3; /* Açık mavi */
+        margin-bottom: 20px;
+    }
+
+    /* Öğrenci Bilgileri */
+    p {
+        font-size: 1.1em;
+        margin: 10px 0;
+    }
+
+    p strong {
+        font-weight: bold;
+        color: #4b9cd3; /* Açık mavi */
+    }
+
+    /* Ders Listesi */
+    #coursesList {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    #coursesList li {
+        font-size: 1.2em;
+        margin: 15px 0;
+        padding: 12px;
+        background-color: #f7f7f7; /* Hafif gri arka plan */
+        border-left: 5px solid #4b9cd3; /* Sol tarafı mavi çizgiyle vurgulama */
+        border-radius: 8px;
+    }
+
+    .removeCourseBtn {
+        background-color: #f44336; /* Kırmızı */
+        color: white;
+        padding: 5px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .removeCourseBtn:hover {
+        background-color: #d32f2f;
+    }
+
+    /* Ders Ekleme Formu */
+    #addCourseForm {
+        display: none;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    #addCourseForm select, #addCourseForm button {
+        font-size: 1.1em;
+        padding: 12px;
+        margin-top: 15px;
+        border-radius: 5px;
+        border: 1px solid #ddd; /* Gri kenarlık */
+        background-color: #f7f7f7; /* Hafif gri arka plan */
+    }
+
+    #addCourseForm select:focus, #addCourseForm button:focus {
+        border-color: #4b9cd3; /* Mavi kenarlık */
+    }
+
+    /* Logout Butonu */
+    #logoutBtn {
+        display: block;
+        width: 100%;
+        margin-top: 30px;
+        padding: 12px;
+        background-color: #4b9cd3; /* Açık mavi */
+        color: white;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #logoutBtn:hover {
+        background-color: #3578a8; /* Daha koyu mavi */
+    }
+  </style>
+</head>
+<body>
+
+<div id="studentInfo">
+  <h2>Student Information</h2>
+  <p><strong>Student Name:</strong> <span id="studentName">Loading...</span></p>
+  <p><strong>Address:</strong> <span id="studentAddress">Loading...</span></p>
+  <p><strong>Phone:</strong> <span id="studentPhone">Loading...</span></p>
+</div>
+
+<div id="studentCourses">
+  <h2>Your Courses</h2>
+  <ul id="coursesList">
+    <!-- Öğrencinin seçtiği dersler burada listelenecek -->
+  </ul>
+  <button id="addCourseBtn">Add New Course</button>
+</div>
+
+<div id="addCourseForm">
+  <h3>Select a Course</h3>
+  <select id="availableCourses">
+    <!-- Mevcut dersler burada listelenecek -->
+  </select>
+  <button id="addCourseBtnSubmit">Add Course</button>
+</div>
+
+<button id="logoutBtn">Logout</button>
+
+<script>
+  const studentId = 496542; // Öğrenci ID'si örneği
+
+  // Öğrenci bilgilerini al
+  fetch(`http://localhost:8081/api/v1/student/getStudent/${studentId}`)
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok: ' + response.statusText);
+          }
+          return response.json();
+      })
+      .then(data => {
+          document.getElementById('studentName').innerText = data.studentName;
+          document.getElementById('studentAddress').innerText = data.address;
+          document.getElementById('studentPhone').innerText = data.phone;
+      })
+      .catch(error => console.error('Error fetching student info:', error));
+
+  // Öğrencinin derslerini al
+  fetch(`http://localhost:8081/api/v1/student/getCourses/${studentId}`)
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok: ' + response.statusText);
+          }
+          return response.json();
+      })
+      .then(courses => {
+          const coursesList = document.getElementById('coursesList');
+          courses.forEach(course => {
+              const li = document.createElement('li');
+              li.innerHTML = `${course.name} <button class="removeCourseBtn" data-course-id="${course.id}">Remove</button>`;
+              coursesList.appendChild(li);
+          });
+      })
+      .catch(error => console.error('Error fetching courses:', error));
+
+  // Mevcut dersleri al
+  fetch('http://localhost:8081/api/v1/courses')
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok: ' + response.statusText);
+          }
+          return response.json();
+      })
+      .then(courses => {
+          const availableCoursesSelect = document.getElementById('availableCourses');
+          courses.forEach(course => {
+              const option = document.createElement('option');
+              option.value = course.id;
+              option.text = course.name;
+              availableCoursesSelect.appendChild(option);
+          });
+      })
+      .catch(error => console.error('Error fetching available courses:', error));
+
+  // Ders ekleme formunu göster
+  document.getElementById('addCourseBtn').addEventListener('click', function() {
+      document.getElementById('addCourseForm').style.display = 'block';
+  });
+
+  // Ders ekleme işlemi
+  document.getElementById('addCourseBtnSubmit').addEventListener('click', function() {
+      const courseId = document.getElementById('availableCourses').value;
+      fetch(`http://localhost:8081/api/v1/student/addCourse/${studentId}`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ courseId })
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok: ' + response.statusText);
+          }
+          return response.json();
+      })
+      .then(data => {
+          alert('Course added successfully!');
+          window.location.reload();
+      })
+      .catch(error => {
+          alert('Error adding course: ' + error.message);
+      });
+  });
+
+  // Çıkış yapma işlemi
+  document.getElementById('logoutBtn').addEventListener('click', function() {
+      window.location.href = "index.html"; // Kullanıcıyı çıkış sayfasına yönlendir
+  });
+</script>
+
+</body>
+</html>

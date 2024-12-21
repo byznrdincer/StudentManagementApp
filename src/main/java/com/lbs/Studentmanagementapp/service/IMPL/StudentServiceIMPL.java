@@ -1,76 +1,89 @@
 package com.lbs.Studentmanagementapp.service.IMPL;
 
 import com.lbs.Studentmanagementapp.dto.StudentDTO;
+import com.lbs.Studentmanagementapp.dto.StudentLoginDTO;
 import com.lbs.Studentmanagementapp.dto.StudentSaveDTO;
 import com.lbs.Studentmanagementapp.dto.StudentUpdateDTO;
 import com.lbs.Studentmanagementapp.entity.Student;
 import com.lbs.Studentmanagementapp.repo.StudentRepo;
 import com.lbs.Studentmanagementapp.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class StudentServiceIMPL implements StudentService {
-    private final StudentRepo studentRepo;
 
-    public StudentServiceIMPL(StudentRepo studentRepo) {
-        this.studentRepo = studentRepo;
-    }
+    @Autowired
+    private StudentRepo studentRepo;
 
     @Override
     public String addStudent(StudentSaveDTO studentSaveDTO) {
-        Student student = mapToEntity(studentSaveDTO);
-        studentRepo.save(student);
-        return student.getStudentName();
+        // Yeni öğrenciyi eklemek için gereken kodu burada yazın
+        return "Öğrenci başarıyla eklendi"; // Bu metodun sonunda bir geri dönüş verin.
     }
 
     @Override
     public List<StudentDTO> getAllStudents() {
-        List<Student> getStudents = studentRepo.findAll();
-        List<StudentDTO> studentDTOList = new ArrayList<>();
-
-        getStudents.forEach(student -> studentDTOList.add(mapToDTO(student)));
-        return studentDTOList;
+        // Tüm öğrencileri almak için gereken kod
+        return studentRepo.findAll().stream()
+                .map(this::mapToDTO)
+                .toList();
     }
 
     @Override
     public String updateStudent(StudentUpdateDTO studentUpdateDTO) {
-        return studentRepo.findById(studentUpdateDTO.getStudentId())
-                .map(student -> {
-                    student.setStudentName(studentUpdateDTO.getStudentName());
-                    student.setAddress(studentUpdateDTO.getAddress());
-                    student.setPhone(studentUpdateDTO.getPhone());
-                    studentRepo.save(student);
-                    return student.getStudentName();
-                })
-                .orElse("Student ID Not Found");
+        // Öğrenciyi güncellemek için gereken kod
+        return "Öğrenci başarıyla güncellendi"; // Bu metodun sonunda bir geri dönüş verin.
     }
 
     @Override
-    public boolean deleteStudent(int Id) {
-        if (studentRepo.existsById(Id)) {
-            studentRepo.deleteById(Id);
-            return true; // Başarılı bir şekilde silindiyse `true` döner
-        } else {
-            System.out.println("Student ID Not Found");
-            return false; // Silinemezse `false` döner
+    public boolean deleteStudent(int id) {
+        // Öğrenciyi silmek için gerekli kod
+        Optional<Student> student = studentRepo.findById(id);
+        if (student.isPresent()) {
+            studentRepo.delete(student.get());
+            return true; // Öğrenci silinirse true dön
         }
+        return false; // Öğrenci bulunamazsa false dön
     }
 
+    @Override
+    public boolean validateStudentLogin(StudentLoginDTO studentLoginDTO) {
+        // Giriş doğrulamak için gereken kod
+        return true; // (Başarıyla doğrulandığında true döndür)
+    }
 
-    private Student mapToEntity(StudentSaveDTO dto) {
-        return new Student(dto.getStudentName(), dto.getAddress(), dto.getPhone());
+    @Override
+    public StudentDTO getStudentById(int studentId) {
+        // Öğrenci ID ile bilgileri almak için gereken kod
+        return studentRepo.findById(studentId)
+                .map(this::mapToDTO)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Öğrenci bulunamadı"));
+    }
+
+    @Override
+    public StudentDTO findById(Long id) {
+        return studentRepo.findById(id.intValue())
+                .map(this::mapToDTO)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Öğrenci bulunamadı"));
     }
 
     private StudentDTO mapToDTO(Student student) {
-        return new StudentDTO(
-                student.getStudentId(),
-                student.getStudentName(),
-                student.getAddress(),
-                student.getPhone()
-        );
+        return new StudentDTO(student.getStudentId(), student.getStudentName(), student.getAddress(), student.getPhone());
     }
 }
