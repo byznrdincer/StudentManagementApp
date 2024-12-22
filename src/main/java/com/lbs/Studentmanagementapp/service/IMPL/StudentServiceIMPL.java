@@ -14,15 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,6 +39,7 @@ public class StudentServiceIMPL implements StudentService {
         // Öğrencinin adını döndürüyoruz (başarı mesajı olarak kullanılacak)
         return student.getStudentName();
     }
+
     @Override
     public List<StudentDTO> getAllStudents() {
         // Tüm öğrencileri almak için gereken kod
@@ -61,14 +55,31 @@ public class StudentServiceIMPL implements StudentService {
     }
 
     @Override
+    public StudentDTO getStudentById(int id) {
+        // Öğrenciyi ID ile almak için kod
+        Optional<Student> studentOpt = studentRepo.findById(id);
+        if (studentOpt.isPresent()) {
+            Student student = studentOpt.get();
+            return new StudentDTO(
+                    student.getStudentId(),
+                    student.getStudentName(),
+                    student.getAddress(),
+                    student.getPhone()
+            );
+        } else {
+            return null; // Öğrenci bulunamazsa null döner
+        }
+    }
+
+    @Override
     public boolean deleteStudent(int id) {
         // Öğrenciyi silmek için gerekli kod
         Optional<Student> student = studentRepo.findById(id);
         if (student.isPresent()) {
             studentRepo.delete(student.get());
-            return true; // Öğrenci silinirse true dön
+            return true; // Öğrenci silinirse true döner
         }
-        return false; // Öğrenci bulunamazsa false dön
+        return false; // Öğrenci bulunamazsa false döner
     }
 
     @Override
@@ -79,15 +90,8 @@ public class StudentServiceIMPL implements StudentService {
     }
 
     @Override
-    public StudentDTO getStudentById(int studentId) {
-        // Öğrenci ID ile bilgileri almak için gereken kod
-        return studentRepo.findById(studentId)
-                .map(this::mapToDTO)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Öğrenci bulunamadı"));
-    }
-
-    @Override
     public StudentDTO findById(Long id) {
+        // Öğrenci ID ile bilgileri almak için gereken kod
         return studentRepo.findById(id.intValue())
                 .map(this::mapToDTO)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Öğrenci bulunamadı"));
