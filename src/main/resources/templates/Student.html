@@ -107,196 +107,196 @@
 </div>
 
 <script>
-  // Kursları çek ve dropdown'a ekle
-  async function fetchBatches() {
-      try {
-          const response = await fetch('http://localhost:8081/api/v1/batch/getAllBatches');
+  // Öğrenci detaylarını çek
+async function fetchStudentDetails() {
+    const studentId = document.getElementById('studentId').value;
+    if (!studentId) {
+        alert('Lütfen geçerli bir öğrenci ID girin.');
+        return;
+    }
 
-          if (!response.ok) {
-              throw new Error('Ağ sorunu: ' + response.statusText);
-          }
+    try {
+        const response = await fetch(`http://localhost:8081/api/v1/student/${studentId}`);
 
-          const batches = await response.json();
+        if (response.status === 204) {
+            document.getElementById('noRecordsMessage').style.display = 'block';
+            document.getElementById('studentInfo').style.display = 'none';
+            return;
+        } else if (!response.ok) {
+            alert('Bir hata oluştu: ' + response.statusText);
+            return;
+        }
 
-          // Eğer boş bir dizi dönerse kullanıcıya bilgi ver
-          if (!Array.isArray(batches) || batches.length === 0) {
-              alert('Batch bulunamadı.');
-              return;
-          }
+        const studentDetails = await response.json();
+        const studentInfoContent = document.getElementById('studentInfoContent');
+        studentInfoContent.innerHTML = '';
 
-          const batchSelect = document.getElementById('courseSelect');
-          batchSelect.innerHTML = '<option value="" disabled selected>Batch Seçin</option>';
+        const infoRow = document.createElement('div');
+        infoRow.classList.add('row', 'info-row');
+        infoRow.innerHTML = `
+            <div class="col-md-6">
+                <strong>Öğrenci ID:</strong> ${studentDetails.studentId}
+            </div>
+            <div class="col-md-6">
+                <strong>Öğrenci Adı:</strong> ${studentDetails.studentName}
+            </div>
+            <div class="col-md-6">
+                <strong>Adres:</strong> ${studentDetails.address}
+            </div>
+            <div class="col-md-6">
+                <strong>Telefon:</strong> ${studentDetails.phone}
+            </div>
+        `;
+        studentInfoContent.appendChild(infoRow);
 
-          batches.forEach(batch => {
-              const option = document.createElement('option');
-              option.value = batch.batchId;
-              option.textContent = batch.batchName;
-              batchSelect.appendChild(option);
-          });
-      } catch (error) {
-          console.error('Error fetching batches:', error);
-          alert('Batch listesi yüklenirken bir hata oluştu.');
-      }
-  }
+        document.getElementById('studentInfo').style.display = 'block';
+        document.getElementById('noRecordsMessage').style.display = 'none';
+        fetchEnrollments(); // Öğrenci enrollments'ını da getir
 
-  // Öğrenci kayıtlarını getir
-  async function fetchEnrollments() {
-      const studentId = document.getElementById('studentId').value;
-      if (!studentId) {
-          alert('Lütfen geçerli bir öğrenci ID girin.');
-          return;
-      }
+    } catch (error) {
+        console.error('Error fetching student details:', error);
+        alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+    }
+}
 
-      try {
-          const response = await fetch(`http://localhost:8081/api/v1/enrollment/getStudentEnrollments/${studentId}`);
+// Ders kayıtlarını çek
+async function fetchEnrollments() {
+    const studentId = document.getElementById('studentId').value;
+    if (!studentId) {
+        alert('Lütfen geçerli bir öğrenci ID girin.');
+        return;
+    }
 
-          if (response.status === 204) {
-              document.getElementById('noRecordsMessage').style.display = 'block';
-              document.getElementById('enrollmentsInfo').style.display = 'none';
-              return;
-          } else if (!response.ok) {
-              alert('Bir hata oluştu: ' + response.statusText);
-              return;
-          }
+    try {
+        const response = await fetch(`http://localhost:8081/api/v1/enrollment/getStudentEnrollments/${studentId}`);
 
-          const enrollments = await response.json();
-          const enrollmentsInfoContent = document.getElementById('enrollmentsInfoContent');
-          enrollmentsInfoContent.innerHTML = '';
+        if (response.status === 204) {
+            document.getElementById('noRecordsMessage').style.display = 'block';
+            document.getElementById('enrollmentsInfo').style.display = 'none';
+            return;
+        } else if (!response.ok) {
+            alert('Bir hata oluştu: ' + response.statusText);
+            return;
+        }
 
-          enrollments.forEach(enrollment => {
-              const infoRow = document.createElement('div');
-              infoRow.classList.add('row', 'info-row');
-              infoRow.innerHTML = `
-                  <div class="col-md-6">
-                      <strong>Enrollment ID:</strong> ${enrollment.enrollid}
-                  </div>
-                  <div class="col-md-6">
-                      <strong>Öğrenci ID:</strong> ${enrollment.studentId}
-                  </div>
-                  <div class="col-md-6">
-                      <strong>Öğrenci Adı:</strong> ${enrollment.studentName}
-                  </div>
-                  <div class="col-md-6">
-                      <strong>Batch ID:</strong> ${enrollment.batchId}
-                  </div>
-                  <div class="col-md-6">
-                      <strong>Batch Adı:</strong> ${enrollment.batchName}
-                  </div>
-                  <div class="col-md-6">
-                      <strong>Katılım Tarihi:</strong> ${enrollment.joindate}
-                  </div>
-                  <div class="col-md-6">
-                      <strong>Ücret:</strong> ${enrollment.fee}₺
-                  </div>
-              `;
-              enrollmentsInfoContent.appendChild(infoRow);
-          });
+        const enrollments = await response.json();
+        const enrollmentsInfoContent = document.getElementById('enrollmentsInfoContent');
+        enrollmentsInfoContent.innerHTML = '';
 
-          document.getElementById('enrollmentsInfo').style.display = 'block';
-          document.getElementById('noRecordsMessage').style.display = 'none';
-          document.getElementById('newEnrollmentForm').style.display = 'block'; // Yeni ders kaydı formunu göster
+        enrollments.forEach(enrollment => {
+            const infoRow = document.createElement('div');
+            infoRow.classList.add('row', 'info-row');
+            infoRow.innerHTML = `
+                <div class="col-md-6">
+                    <strong>Enrollment ID:</strong> ${enrollment.enrollid}
+                </div>
+                <div class="col-md-6">
+                    <strong>Öğrenci ID:</strong> ${enrollment.studentId}
+                </div>
+                <div class="col-md-6">
+                    <strong>Öğrenci Adı:</strong> ${enrollment.studentName}
+                </div>
+                <div class="col-md-6">
+                    <strong>Batch ID:</strong> ${enrollment.batchId}
+                </div>
+                <div class="col-md-6">
+                    <strong>Batch Adı:</strong> ${enrollment.batchName}
+                </div>
+                <div class="col-md-6">
+                    <strong>Katılım Tarihi:</strong> ${enrollment.joindate}
+                </div>
+                <div class="col-md-6">
+                    <strong>Ücret:</strong> ${enrollment.fee}₺
+                </div>
+            `;
+            enrollmentsInfoContent.appendChild(infoRow);
+        });
 
-      } catch (error) {
-          console.error('Error fetching enrollments:', error);
-          alert('Bir hata oluştu. Lütfen tekrar deneyin.');
-      }
-  }
+        document.getElementById('enrollmentsInfo').style.display = 'block';
+        document.getElementById('noRecordsMessage').style.display = 'none';
+        document.getElementById('newEnrollmentForm').style.display = 'block'; // Yeni ders kaydı formunu göster
 
-  // Öğrenci detaylarını getir
-  async function fetchStudentDetails() {
-      const studentId = document.getElementById('studentId').value;
-      if (!studentId) {
-          alert('Lütfen geçerli bir öğrenci ID girin.');
-          return;
-      }
+    } catch (error) {
+        console.error('Error fetching enrollments:', error);
+        alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+    }
+}
 
-      try {
-          const response = await fetch(`http://localhost:8081/api/v1/student/${studentId}`);
+// Ders gruplarını çek
+async function fetchBatches() {
+    try {
+        const response = await fetch('http://localhost:8081/api/v1/batch/getAllBatches');
 
-          if (response.status === 204) {
-              document.getElementById('noRecordsMessage').style.display = 'block';
-              document.getElementById('studentInfo').style.display = 'none';
-              return;
-          } else if (!response.ok) {
-              alert('Bir hata oluştu: ' + response.statusText);
-              return;
-          }
+        if (!response.ok) {
+            throw new Error('Ağ sorunu: ' + response.statusText);
+        }
 
-          const studentDetails = await response.json();
-          const studentInfoContent = document.getElementById('studentInfoContent');
-          studentInfoContent.innerHTML = '';
+        const batches = await response.json();
+        console.log(batches); // API yanıtını konsolda yazdırın
 
-          const infoRow = document.createElement('div');
-          infoRow.classList.add('row', 'info-row');
-          infoRow.innerHTML = `
-              <div class="col-md-6">
-                  <strong>Öğrenci ID:</strong> ${studentDetails.studentId}
-              </div>
-              <div class="col-md-6">
-                  <strong>Öğrenci Adı:</strong> ${studentDetails.studentName}
-              </div>
-              <div class="col-md-6">
-                  <strong>Adres:</strong> ${studentDetails.address}
-              </div>
-              <div class="col-md-6">
-                  <strong>Telefon:</strong> ${studentDetails.phone}
-              </div>
-          `;
-          studentInfoContent.appendChild(infoRow);
+        // Eğer boş bir dizi dönerse kullanıcıya bilgi ver
+        if (!Array.isArray(batches) || batches.length === 0) {
+            alert('Batch bulunamadı.');
+            return;
+        }
 
-          document.getElementById('studentInfo').style.display = 'block';
-          document.getElementById('noRecordsMessage').style.display = 'none';
-          fetchEnrollments(); // Öğrenci enrollments'ını da getir
+        const batchSelect = document.getElementById('courseSelect');
+        batchSelect.innerHTML = '<option value="" disabled selected>Batch Seçin</option>';
 
-      } catch (error) {
-          console.error('Error fetching student details:', error);
-          alert('Bir hata oluştu. Lütfen tekrar deneyin.');
-      }
-  }
+        // Batches dizisini döngü ile gezip dropdown'a ekle
+        batches.forEach(batch => {
+            const option = document.createElement('option');
+            option.value = batch.batchid; // batchid kullanılıyor
+            option.textContent = batch.batchname; // batchname kullanılıyor
+            batchSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching batches:', error);
+        alert('Batch listesi yüklenirken bir hata oluştu.');
+    }
+}
 
-  // Ders kaydı yap
-  document.getElementById('enrollmentForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const studentId = document.getElementById('studentId').value;
-      const batchId = document.getElementById('courseSelect').value;
+// Ders kaydı yap
+document.getElementById('enrollmentForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const studentId = document.getElementById('studentId').value;
+    const batchId = document.getElementById('courseSelect').value;
 
-      if (!studentId || !batchId) {
-          alert('Lütfen tüm alanları doldurun.');
-          return;
-      }
+    if (!studentId || !batchId) {
+        alert('Lütfen tüm alanları doldurun.');
+        return;
+    }
 
-      try {
-          const response = await fetch(`http://localhost:8081/api/v1/enrollment/enroll`, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ studentId, batchId })
-          });
+    try {
+        const response = await fetch(`http://localhost:8081/api/v1/enrollment/save`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                student_id: studentId,   // student_id
+                batch_id: batchId,       // batch_id
+                joindate: new Date().toISOString().split('T')[0], // Güncel tarihi al
+                fee: 350 // Örnek ücret, mevcut işleyişe göre değiştirin
+            })
+        });
 
-          if (response.status === 200) {
-              alert('Ders kaydınız başarıyla yapıldı!');
-          } else {
-              alert('Ders kaydı yapılırken bir hata oluştu: ' + response.statusText);
-          }
-      } catch (error) {
-          console.error('Error enrolling in course:', error);
-          alert('Bir hata oluştu. Lütfen tekrar deneyin.');
-      }
-  });
+        if (response.ok) {
+            alert('Ders kaydınız başarıyla yapıldı!');
+        } else {
+            const errorText = await response.text(); // Hata mesajını yakala
+            alert('Ders kaydı yapılırken bir hata oluştu: ' + errorText);
+        }
+    } catch (error) {
+        console.error('Error enrolling in course:', error);
+        alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+    }
+});
 
-  // Sayfa yüklendiğinde ders gruplarını çek
-  window.onload = () => {
-      fetchBatches();
-      const enrollmentForm = document.getElementById('enrollmentForm');
-      if (enrollmentForm) {
-          enrollmentForm.addEventListener('submit', async (e) => {
-              e.preventDefault();
-              // Ders kaydı yapılacak
-          });
-      }
-  };
-
+// Sayfa yüklendiğinde ders gruplarını ve gerekli verileri çek
+window.onload = () => {
+    fetchBatches(); // Sayfa yüklendiğinde batch'leri çek
+};
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
