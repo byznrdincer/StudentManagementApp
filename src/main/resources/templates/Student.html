@@ -57,7 +57,7 @@
 <body>
 
 <div class="container mt-5">
-  <input type="text" id="studentId" class="form-control" placeholder="Öğrenci ID'yi Girin">
+  <input type="text" id="studentId" class="form-control" placeholder="Öğrenci ID Doğrula">
   <button class="btn btn-secondary w-100 mt-3" onclick="fetchStudentDetails()">Öğrenci Bilgilerini Getir</button>
 
   <div class="alert alert-warning mt-3" id="noRecordsMessage" style="display:none;">
@@ -187,26 +187,12 @@ async function fetchEnrollments() {
             const infoRow = document.createElement('div');
             infoRow.classList.add('row', 'info-row');
             infoRow.innerHTML = `
-                <div class="col-md-6">
-                    <strong>Enrollment ID:</strong> ${enrollment.enrollid}
-                </div>
-                <div class="col-md-6">
-                    <strong>Öğrenci ID:</strong> ${enrollment.studentId}
-                </div>
-                <div class="col-md-6">
-                    <strong>Öğrenci Adı:</strong> ${enrollment.studentName}
-                </div>
-                <div class="col-md-6">
-                    <strong>Batch ID:</strong> ${enrollment.batchId}
-                </div>
-                <div class="col-md-6">
-                    <strong>Batch Adı:</strong> ${enrollment.batchName}
+
+               <div class="col-md-6">
+                    <strong>Ders Adı:</strong> ${enrollment.batchName}
                 </div>
                 <div class="col-md-6">
                     <strong>Katılım Tarihi:</strong> ${enrollment.joindate}
-                </div>
-                <div class="col-md-6">
-                    <strong>Ücret:</strong> ${enrollment.fee}₺
                 </div>
             `;
             enrollmentsInfoContent.appendChild(infoRow);
@@ -241,7 +227,7 @@ async function fetchBatches() {
         }
 
         const batchSelect = document.getElementById('courseSelect');
-        batchSelect.innerHTML = '<option value="" disabled selected>Batch Seçin</option>';
+        batchSelect.innerHTML = '<option value="" disabled selected>Ders Seçin</option>';
 
         // Batches dizisini döngü ile gezip dropdown'a ekle
         batches.forEach(batch => {
