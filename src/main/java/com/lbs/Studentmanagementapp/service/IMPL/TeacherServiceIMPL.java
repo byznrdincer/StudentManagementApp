@@ -47,6 +47,22 @@ public class TeacherServiceIMPL implements TeacherService {
         }
         return teacherDTOList;
     }
+    @Override
+    public TeacherDTO getTeacherById(int id) {
+        Optional<Teacher> teacherOpt = teacherRepo.findById(id);
+        if (teacherOpt.isPresent()) {
+            Teacher teacher = teacherOpt.get();
+            return new TeacherDTO(
+                    teacher.getTeacherid(),
+                    teacher.getTeachername(),
+                    teacher.getAddress(),
+                    teacher.getPhone()
+            );
+        } else {
+            return null;
+        }
+    }
+
 
     // Öğretmen güncelleme
     @Override

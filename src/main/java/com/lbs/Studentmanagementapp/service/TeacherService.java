@@ -16,4 +16,6 @@ public interface TeacherService {
     boolean validateTeacherLogin(TeacherLoginDTO teacherLoginDTO);
 
     boolean deleteTeacher(int id);
+    TeacherDTO getTeacherById(int id);
+
 }

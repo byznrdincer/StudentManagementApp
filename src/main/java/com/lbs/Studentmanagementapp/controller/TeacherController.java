@@ -50,6 +50,17 @@ public class TeacherController {
     public List<TeacherDTO> getAllTeachers() {
         return teacherService.getAllTeachers();
     }
+    // Öğretmen bilgilerini ID'ye göre almak
+    @GetMapping("/{id}")
+    public ResponseEntity<TeacherDTO> getTeacherById(@PathVariable int id) {
+        TeacherDTO teacherDTO = teacherService.getTeacherById(id);
+        if (teacherDTO != null) {
+            return ResponseEntity.ok(teacherDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
 
     // Öğretmen güncelleme
     @PutMapping(path = "/update")
