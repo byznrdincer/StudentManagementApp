@@ -14,4 +14,6 @@ public interface EnrollmentService {
     String updateEnrollment(EnrollmentUpdateDTO enrollmentUpdateDTO);
 
     boolean deleteEnrollment(int id);
+    List<EnrollmentDTO> getEnrollmentsByStudentId(int studentId);
+
 }

@@ -15,6 +15,7 @@ public class Enrollment {
     @JoinColumn(name = "student_id",nullable = false)
     private Student student;
 
+
     @ManyToOne
     @JoinColumn(name = "batch_id",nullable = false)
     private Batch batch;

@@ -65,6 +65,25 @@ public class EnrollmentServiceIMPL implements EnrollmentService {
 
         return enrollmentDTOList;
     }
+    @Override
+    public List<EnrollmentDTO> getEnrollmentsByStudentId(int studentId) {
+        List<Enrollment> enrollments = enrollmentRepo.findByStudentStudentId(studentId); // Öğrenci ID'sine göre kayıtları çek
+        List<EnrollmentDTO> enrollmentDTOList = new ArrayList<>();
+
+        for (Enrollment enrollment : enrollments) {
+            EnrollmentDTO enrollmentDTO = new EnrollmentDTO(
+                    enrollment.getEnrollid(),
+                    enrollment.getStudent(),
+                    enrollment.getBatch(),
+                    enrollment.getJoindate(),
+                    enrollment.getFee()
+            );
+            enrollmentDTOList.add(enrollmentDTO);
+        }
+
+        return enrollmentDTOList;
+    }
+
 
     @Override
     public String updateEnrollment(EnrollmentUpdateDTO enrollmentUpdateDTO) {

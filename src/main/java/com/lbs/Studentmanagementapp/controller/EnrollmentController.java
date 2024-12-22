@@ -44,6 +44,17 @@ public class EnrollmentController {
         }
         return ResponseEntity.ok(allEnrollments);  // HTTP 200 OK ile listeyi döndür
     }
+    @GetMapping("/getStudentEnrollments/{studentId}")
+    public ResponseEntity<List<EnrollmentDTO>> getStudentEnrollments(@PathVariable int studentId) {
+        List<EnrollmentDTO> enrollments = enrollmentService.getEnrollmentsByStudentId(studentId);
+
+        if (enrollments.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // Öğrencinin kaydı yoksa 204 döndür
+        }
+
+        return ResponseEntity.ok(enrollments); // Öğrencinin kayıtlarını 200 OK ile döndür
+    }
+
 
     @PutMapping(path = "/update")
     public ResponseEntity<String> updateEnrollment(@RequestBody EnrollmentUpdateDTO enrollmentUpdateDTO) {
