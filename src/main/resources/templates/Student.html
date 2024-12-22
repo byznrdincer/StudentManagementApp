@@ -11,76 +11,30 @@
       font-family: 'Arial', sans-serif;
       background-color: #f8f9fa;
     }
-
     .container {
       margin-top: 50px;
     }
-
     .card {
       margin-top: 20px;
     }
-
-    .card-header {
-      background-color: #007bff;
-      color: white;
-      font-weight: bold;
-    }
-
-    .card-body {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
     .table {
       background-color: white;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-
-    .table th,
-    .table td {
+    .table th, .table td {
       text-align: center;
-      vertical-align: middle;
     }
-
     .table th {
       background-color: #007bff;
       color: white;
     }
-
     .alert {
       display: none;
       margin-top: 20px;
     }
-
     .info-row {
       margin-bottom: 10px;
-    }
-
-    .btn-custom {
-      background-color: #007bff;
-      color: white;
-      border-radius: 5px;
-      font-weight: bold;
-    }
-
-    .btn-custom:hover {
-      background-color: #0056b3;
-    }
-
-    .form-control:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    }
-
-    .alert-warning {
-      background-color: #fff3cd;
-      color: #856404;
-    }
-
-    .mt-4 {
-      margin-top: 30px;
     }
   </style>
 </head>
@@ -90,23 +44,13 @@
 <div class="container">
   <h2 class="text-center mb-4">Öğrenci Kayıtları</h2>
 
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          Öğrenci Bilgileri
-        </div>
-        <div class="card-body">
-          <div class="mb-3">
-            <label for="studentId" class="form-label">Öğrenci ID'yi Doğrula</label>
-            <input type="number" class="form-control" id="studentId" placeholder="Öğrenci ID'sini girin" required>
-          </div>
-          <button class="btn btn-custom w-100" onclick="fetchEnrollments()">Kayıtları Getir</button>
-          <button class="btn btn-custom w-100 mt-3" onclick="fetchStudentDetails()">Öğrenci Bilgilerini Getir</button>
-        </div>
-      </div>
-    </div>
+  <div class="mb-3">
+    <label for="studentId" class="form-label">Öğrenci Id Doğrula</label>
+    <input type="number" class="form-control" id="studentId" placeholder="Öğrenci ID'sini girin">
   </div>
+
+  <button class="btn btn-primary w-100" onclick="fetchEnrollments()">Kaydınızı Görüntüle</button>
+  <button class="btn btn-secondary w-100 mt-3" onclick="fetchStudentDetails()">Öğrenci Bilgilerini Getir</button>
 
   <div class="alert alert-warning mt-3" id="noRecordsMessage">
     Kayıt bulunamadı.
@@ -114,11 +58,9 @@
 
   <!-- Öğrenci Detayları -->
   <div id="studentInfo" style="display:none;">
-    <div class="card mt-4">
-      <div class="card-header">
-        Öğrenci Detayları
-      </div>
+    <div class="card">
       <div class="card-body">
+        <h5 class="card-title">Öğrenci Detayları</h5>
         <div id="studentInfoContent">
           <!-- Öğrenci bilgileri burada görünecek -->
         </div>
@@ -126,84 +68,119 @@
     </div>
   </div>
 
-  <!-- Kayıt Bilgileri -->
+  <!-- Kayıtlı Dersler -->
   <div id="enrollmentsInfo" style="display:none;">
-    <div class="card mt-4">
-      <div class="card-header">
-        Öğrenci Kayıt Bilgileri
-      </div>
+    <div class="card">
       <div class="card-body">
+        <h5 class="card-title">Kayıtlı Olduğunuz Dersler</h5>
         <div id="enrollmentsInfoContent">
-          <!-- Kayıt bilgileri burada görünecek -->
+          <!-- Kayıtlı ders bilgileri burada görünecek -->
         </div>
       </div>
     </div>
 
-    <!-- Butonlar -->
-    <button onclick="window.location.href='DersGrupları.html'" class="btn btn-secondary w-100 mt-3">Ders Grupları</button>
-    <button onclick="window.location.href='Dersler.html'" class="btn btn-secondary w-100 mt-3">Dersler</button>
+    <!-- Yeni Ders Kaydı -->
+    <div id="newEnrollmentForm" style="display:none;">
+      <div class="card mt-3">
+        <div class="card-body">
+          <h5 class="card-title">Yeni Ders Kaydı Yap</h5>
+          <form id="enrollmentForm">
+            <label for="courseSelect" class="form-label">Ders Seçiniz</label>
+            <select class="form-select" id="courseSelect">
+              <!-- Dersler burada listelenecek -->
+            </select>
+            <button type="submit" class="btn btn-success w-100 mt-3">Ders Kaydı Yap</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </div>
 
 <script>
+  // Kursları çek ve dropdown'a ekle
+  async function fetchCourses() {
+    try {
+      const response = await fetch('http://localhost:8081/api/v1/course/getAllCourses');
+      const courses = await response.json();
+
+      const courseSelect = document.getElementById('courseSelect');
+      courseSelect.innerHTML = '<option value="" disabled selected>Ders Seçin</option>'; // Başlangıç için seçili değil bir seçenek ekle
+
+      courses.forEach(course => {
+        const option = document.createElement('option');
+        option.value = course.courseId;
+        option.textContent = course.courseName;
+        courseSelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+      alert('Dersler yüklenirken bir hata oluştu.');
+    }
+  }
+
   // Öğrenci kayıtlarını getir
   async function fetchEnrollments() {
     const studentId = document.getElementById('studentId').value;
     if (!studentId) {
-      alert('Lütfen geçerli bir öğrenci ID girin.');
-      return;
+        alert('Lütfen geçerli bir öğrenci ID girin.');
+        return;
     }
 
     try {
-      const response = await fetch(`http://localhost:8081/api/v1/enrollment/getStudentEnrollments/${studentId}`);
+        const response = await fetch(`http://localhost:8081/api/v1/enrollment/getStudentEnrollments/${studentId}`);
 
-      if (response.status === 204) {
-        document.getElementById('noRecordsMessage').style.display = 'block';
-        document.getElementById('enrollmentsInfo').style.display = 'none';
-        return;
-      }
+        if (response.status === 204) {
+            document.getElementById('noRecordsMessage').style.display = 'block';
+            document.getElementById('enrollmentsInfo').style.display = 'none';
+            return;
+        }
 
-      const enrollments = await response.json();
+        const enrollments = await response.json();
 
-      const enrollmentsInfoContent = document.getElementById('enrollmentsInfoContent');
-      enrollmentsInfoContent.innerHTML = '';
+        const enrollmentsInfoContent = document.getElementById('enrollmentsInfoContent');
+        enrollmentsInfoContent.innerHTML = '';
 
-      enrollments.forEach(enrollment => {
-        const infoRow = document.createElement('div');
-        infoRow.classList.add('row', 'info-row');
-        infoRow.innerHTML = `
-            <div class="col-md-6">
-                <strong>Enrollment ID:</strong> ${enrollment.enrollid}
-            </div>
-            <div class="col-md-6">
-                <strong>Öğrenci ID:</strong> ${enrollment.studentId}
-            </div>
-            <div class="col-md-6">
-                <strong>Öğrenci Adı:</strong> ${enrollment.studentName}
-            </div>
-            <div class="col-md-6">
-                <strong>Batch ID:</strong> ${enrollment.batchId}
-            </div>
-            <div class="col-md-6">
-                <strong>Batch Adı:</strong> ${enrollment.batchName}
-            </div>
-            <div class="col-md-6">
-                <strong>Katılım Tarihi:</strong> ${enrollment.joindate}
-            </div>
-            <div class="col-md-6">
-                <strong>Ücret:</strong> ${enrollment.fee}₺
-            </div>
-        `;
-        enrollmentsInfoContent.appendChild(infoRow);
-      });
+        enrollments.forEach(enrollment => {
+            const infoRow = document.createElement('div');
+            infoRow.classList.add('row', 'info-row');
+            infoRow.innerHTML = `
+                <div class="col-md-6">
+                    <strong>Enrollment ID:</strong> ${enrollment.enrollid}
+                </div>
+                <div class="col-md-6">
+                    <strong>Öğrenci ID:</strong> ${enrollment.studentId}
+                </div>
+                <div class="col-md-6">
+                    <strong>Öğrenci Adı:</strong> ${enrollment.studentName}
+                </div>
+                <div class="col-md-6">
+                    <strong>Batch ID:</strong> ${enrollment.batchId}
+                </div>
+                <div class="col-md-6">
+                    <strong>Batch Adı:</strong> ${enrollment.batchName}
+                </div>
+                <div class="col-md-6">
+                    <strong>Katılım Tarihi:</strong> ${enrollment.joindate}
+                </div>
+                <div class="col-md-6">
+                    <strong>Ücret:</strong> ${enrollment.fee}₺
+                </div>
+            `;
+            enrollmentsInfoContent.appendChild(infoRow);
+        });
 
-      document.getElementById('enrollmentsInfo').style.display = 'block';
-      document.getElementById('noRecordsMessage').style.display = 'none';
+        document.getElementById('enrollmentsInfo').style.display = 'block';
+        document.getElementById('noRecordsMessage').style.display = 'none';
+
+        // Yeni ders kaydı formunu göster
+        document.getElementById('newEnrollmentForm').style.display = 'block';
 
     } catch (error) {
-      console.error('Error fetching enrollments:', error);
-      alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+        console.error('Error fetching enrollments:', error);
+        alert('Bir hata oluştu. Lütfen tekrar deneyin.');
     }
   }
 
@@ -211,51 +188,85 @@
   async function fetchStudentDetails() {
     const studentId = document.getElementById('studentId').value;
     if (!studentId) {
-      alert('Lütfen geçerli bir öğrenci ID girin.');
-      return;
+        alert('Lütfen geçerli bir öğrenci ID girin.');
+        return;
     }
 
     try {
-      const response = await fetch(`http://localhost:8081/api/v1/student/${studentId}`);
+        const response = await fetch(`http://localhost:8081/api/v1/student/${studentId}`);
 
-      if (response.status === 204) {
-        document.getElementById('noRecordsMessage').style.display = 'block';
-        document.getElementById('studentInfo').style.display = 'none';
-        return;
-      }
+        if (response.status === 204) {
+            document.getElementById('noRecordsMessage').style.display = 'block';
+            document.getElementById('studentInfo').style.display = 'none';
+            return;
+        }
 
-      const studentDetails = await response.json();
+        const studentDetails = await response.json();
 
-      const studentInfoContent = document.getElementById('studentInfoContent');
-      studentInfoContent.innerHTML = '';
+        const studentInfoContent = document.getElementById('studentInfoContent');
+        studentInfoContent.innerHTML = '';
 
-      // Öğrenci detaylarını sayfada göstermek için
-      const infoRow = document.createElement('div');
-      infoRow.classList.add('row', 'info-row');
-      infoRow.innerHTML = `
-          <div class="col-md-6">
-              <strong>Öğrenci ID:</strong> ${studentDetails.studentId}
-          </div>
-          <div class="col-md-6">
-              <strong>Öğrenci Adı:</strong> ${studentDetails.studentName}
-          </div>
-          <div class="col-md-6">
-              <strong>Adres:</strong> ${studentDetails.address}
-          </div>
-          <div class="col-md-6">
-              <strong>Telefon:</strong> ${studentDetails.phone}
-          </div>
-      `;
-      studentInfoContent.appendChild(infoRow);
+        // Öğrenci detaylarını sayfada göstermek için
+        const infoRow = document.createElement('div');
+        infoRow.classList.add('row', 'info-row');
+        infoRow.innerHTML = `
+            <div class="col-md-6">
+                <strong>Öğrenci ID:</strong> ${studentDetails.studentId}
+            </div>
+            <div class="col-md-6">
+                <strong>Öğrenci Adı:</strong> ${studentDetails.studentName}
+            </div>
+            <div class="col-md-6">
+                <strong>Adres:</strong> ${studentDetails.address}
+            </div>
+            <div class="col-md-6">
+                <strong>Telefon:</strong> ${studentDetails.phone}
+            </div>
+        `;
+        studentInfoContent.appendChild(infoRow);
 
-      document.getElementById('studentInfo').style.display = 'block';
-      document.getElementById('noRecordsMessage').style.display = 'none';
+        document.getElementById('studentInfo').style.display = 'block';
+        document.getElementById('noRecordsMessage').style.display = 'none';
 
     } catch (error) {
-      console.error('Error fetching student details:', error);
-      alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+        console.error('Error fetching student details:', error);
+        alert('Bir hata oluştu. Lütfen tekrar deneyin.');
     }
   }
+
+  // Ders kaydı yap
+  document.getElementById('enrollmentForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const studentId = document.getElementById('studentId').value;
+    const courseId = document.getElementById('courseSelect').value;
+
+    if (!studentId || !courseId) {
+        alert('Lütfen tüm alanları doldurun.');
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:8081/api/v1/enrollment/enroll`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ studentId, courseId })
+        });
+
+        if (response.status === 200) {
+            alert('Ders kaydınız başarıyla yapıldı!');
+        } else {
+            alert('Ders kaydı yapılırken bir hata oluştu.');
+        }
+    } catch (error) {
+        console.error('Error enrolling in course:', error);
+        alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+    }
+  });
+
+  // Sayfa yüklendiğinde dersleri çek
+  window.onload = fetchCourses;
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
