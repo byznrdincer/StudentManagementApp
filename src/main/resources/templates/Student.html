@@ -102,11 +102,18 @@
           </form>
         </div>
       </div>
-    </div>
-  </div>
-</div>
+     </div>
+       <button class="btn btn-primary mt-3" onclick="goBack()">Geri Dön</button>
+      </div>
+       <button class="btn btn-primary mt-3" onclick="goBack()">Geri Dön</button>
+
+       </div>
+
 
 <script>
+  function goBack() {
+    window.history.back();
+  }
   // Öğrenci detaylarını çek
 async function fetchStudentDetails() {
     const studentId = document.getElementById('studentId').value;
