@@ -84,10 +84,10 @@
         <tr>
             <th>Kayıt ID</th>
             <th>Öğrenci Adı</th>
-            <th>Öğrenci ID</th>
-            <th>Kurs Adı</th>
+            <th>Öğrenci Numarası</th>
+            <th>DERS Adı</th>
             <th>Başlangıç Tarihi</th>
-            <th>Ücret</th>
+
         </tr>
         </thead>
         <tbody id="enrollmentsList">
@@ -121,7 +121,6 @@
             <td>${enrollment.studentId}</td>
             <td>${enrollment.batchName}</td>
             <td>${enrollment.joindate}</td>
-            <td>${enrollment.fee} TL</td>
           `;
           enrollmentsList.appendChild(row);
         });
