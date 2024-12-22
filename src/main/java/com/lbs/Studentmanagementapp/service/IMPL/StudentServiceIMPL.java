@@ -33,10 +33,19 @@ public class StudentServiceIMPL implements StudentService {
 
     @Override
     public String addStudent(StudentSaveDTO studentSaveDTO) {
-        // Yeni öğrenciyi eklemek için gereken kodu burada yazın
-        return "Öğrenci başarıyla eklendi"; // Bu metodun sonunda bir geri dönüş verin.
-    }
+        // DTO'dan gelen verilerle yeni bir Student nesnesi oluşturuluyor
+        Student student = new Student(
+                studentSaveDTO.getStudentName(),
+                studentSaveDTO.getAddress(),
+                studentSaveDTO.getPhone()
+        );
 
+        // Student nesnesi veritabanına kaydediliyor
+        studentRepo.save(student);
+
+        // Öğrencinin adını döndürüyoruz (başarı mesajı olarak kullanılacak)
+        return student.getStudentName();
+    }
     @Override
     public List<StudentDTO> getAllStudents() {
         // Tüm öğrencileri almak için gereken kod

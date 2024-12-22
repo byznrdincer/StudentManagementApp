@@ -1,0 +1,111 @@
+[33mcommit a61e36deccd8b647a8b87853533ba7254e8d5024[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Sun Dec 22 02:08:27 2024 +0300
+
+    student sınıfının ana içeriği olusturuldu gerekli bilgiler getirildi
+
+[33mcommit fe4be51c4646677a1573aaee41e1e06cc2e3d9d1[m
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Sat Dec 21 23:48:35 2024 +0300
+
+    ders grupları ders kayıtları ogrenci kayıtları gibi sayfalar olusturuldu
+
+[33mcommit 9e4220de0bf3faed7ce708c1f27c8749102ef726[m
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Sat Dec 21 22:48:03 2024 +0300
+
+    student ve teacher girişleri için hatalar düzeltiliyor
+
+[33mcommit 39161bc81c37d209fedd1535136af9ef15ecb42a[m
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Sat Dec 21 21:57:46 2024 +0300
+
+    frontend için gerekli sınıflar olusturuluyor
+
+[33mcommit 71dfd574a75b6965b58fe992cf2300ae71f615ee[m
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Sat Dec 21 03:25:22 2024 +0300
+
+    frontende devam
+
+[33mcommit 28ad392fa2928e184a8a7a034e6a6099617d478e[m
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Fri Dec 20 16:29:35 2024 +0300
+
+    frontend kısmı entegre ediliyor backende
+
+[33mcommit 23af051ca54d3a08178b094ec039e1dca2ff8052[m
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Tue Dec 17 03:16:49 2024 +0300
+
+    backendi frontendle entegre etmeye calişiyorum
+    ogrenci ve ogretmenler listelendi
+
+[33mcommit b0cee772993fd30a2c5537c15f8d6fe9d57b9a7f[m
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Fri Dec 20 16:20:11 2024 +0300
+
+    Removed unnecessary directory from git tracking
+
+[33mcommit cbc93b2c2e74062c8a8d80144c268ea18e2bcf64[m
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Thu Dec 19 21:04:17 2024 +0300
+
+    Yeni postman json dosyası eklendi
+
+[33mcommit 0edf815b92e2d7fa737cd572095c9d88a9c16ada[m
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Thu Dec 19 20:58:27 2024 +0300
+
+    Eski JSON dosyası silindi
+
+[33mcommit 637f500ea45e24abcd113d04a0cd5eab3742ea19[m
+Merge: be9d719 eb15280
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Thu Dec 19 20:44:30 2024 +0300
+
+    Merge branch 'main' of https://github.com/byznrdincer/StudentManagementApp
+
+[33mcommit be9d7194108e0b318961ada706c618d96b1a4045[m
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Thu Dec 19 20:13:54 2024 +0300
+
+    postman sonucları eklendi
+
+[33mcommit eb1528064e95715b0c79e3ee4365ce9f0c30067e[m
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Thu Dec 19 19:39:23 2024 +0300
+
+    Add Postman collection file
+
+[33mcommit ff1958cc661eff9e80815ffed665d2b60ba04778[m
+Author: Beyzanur Dinçer <beyzanurdincer502@gmail.com>
+Date:   Tue Dec 17 04:03:33 2024 +0300
+
+    Update README.md
+    
+    README.md Dosyası olusturldu
+
+[33mcommit 251bc1275df0b484cc1b81173f08f6e560a92f18[m
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Tue Dec 17 03:16:49 2024 +0300
+
+    Enrollment yani kayıt sınıfını da oluşturduk  Backend kısmı tamamen bitmiştir postman sonuclarını yükleyecegim
+
+[33mcommit d472991ebe8838f04a93498d5432b5a9463725e1[m
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Mon Dec 16 14:42:47 2024 +0300
+
+    Batch ve Course sınıfları eklendi veritabanı baglantısı saglandı postman sonuclarını da fotograf olarak atacagım
+
+[33mcommit 5537f31069eb8827986467b334ce79b8b7489eaa[m
+Author: Beyzanur <beyzanurdincer502@gmail.com>
+Date:   Mon Dec 16 01:56:46 2024 +0300
+
+    proje yeniden oluşturuldu teknik hatalar çözüldü teacher ve Student sınıfları olusturuldu
+
+[33mcommit 3fed55bdbcdd0f0990614967ee708437873d6e08[m
+Author: Beyzanur Dinçer <beyzanurdincer502@gmail.com>
+Date:   Sun Dec 15 01:57:56 2024 +0300
+
+    Initial commit
