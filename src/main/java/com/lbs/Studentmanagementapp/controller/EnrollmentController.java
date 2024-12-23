@@ -11,16 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import com.lbs.Studentmanagementapp.dto.EnrollmentDTO;
-import com.lbs.Studentmanagementapp.dto.EnrollmentSaveDTO;
-import com.lbs.Studentmanagementapp.dto.EnrollmentUpdateDTO;
-import com.lbs.Studentmanagementapp.service.EnrollmentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @CrossOrigin
