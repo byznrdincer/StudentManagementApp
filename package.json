@@ -1,0 +1,19 @@
+{
+  "name": "studentmanagementapp",
+  "version": "1.0.0",
+  "description": "StudentManagementApp\r Proje Tanımı:",
+  "main": "login.js",
+  "scripts": {
+    "start": "live-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/byznrdincer/StudentManagementApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/byznrdincer/StudentManagementApp/issues"
+  },
+  "homepage": "https://github.com/byznrdincer/StudentManagementApp#readme"
+}

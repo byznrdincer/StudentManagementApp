@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Kurs Grupları Listesi</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/cosmo/bootstrap.min.css" />
-    <style>
-        body {
+
+</head>
+<style>
+    body {
           background-color: #f4f4f9;
           font-family: 'Arial', sans-serif;
         }
@@ -73,9 +75,8 @@
 
         .back-btn:hover {
           background-color: #0056b3;
-        }
-    </style>
-</head>
+}
+</style>
 <body>
 <div class="container mt-5">
     <h2>Ders Grupları Listesi</h2>
@@ -97,38 +98,38 @@
     <!-- Geri Dönüş Butonu -->
     <a href="javascript:history.back()" class="back-btn">Geri Dön</a>
 </div>
-
-<script>
+<script >
     window.onload = function() {
-      fetch('http://localhost:8081/api/v1/batch/getAllBatches', {
-        method: 'GET',
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Ağ isteği başarısız oldu');
-        }
-        return response.json();
-      })
-      .then(data => {
-        let batchesList = document.getElementById('batchesList');
-        data.forEach(batch => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${batch.batchid}</td>
-            <td>${batch.course.courseName}</td>
-            <td>${batch.startdate}</td>
-            <td>${batch.batchname}</td>
-          `;
-          batchesList.appendChild(row);
-        });
-      })
-      .catch(error => {
-        console.error('Hata:', error);
-        const errorMessage = document.getElementById('errorMessage');
-        errorMessage.textContent = 'Kurs grupları çekilirken bir hata oluştu: ' + error.message;
-        errorMessage.style.display = 'block';
-      });
-    };
+  fetch('http://localhost:8081/api/v1/batch/getAllBatches', {
+    method: 'GET',
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Ağ isteği başarısız oldu');
+    }
+    return response.json();
+  })
+  .then(data => {
+    let batchesList = document.getElementById('batchesList');
+    data.forEach(batch => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${batch.batchid}</td>
+        <td>${batch.course.courseName}</td>
+        <td>${batch.startdate}</td>
+        <td>${batch.batchname}</td>
+      `;
+      batchesList.appendChild(row);
+    });
+  })
+  .catch(error => {
+    console.error('Hata:', error);
+    const errorMessage = document.getElementById('errorMessage');
+    errorMessage.textContent = 'Kurs grupları çekilirken bir hata oluştu: ' + error.message;
+    errorMessage.style.display = 'block';
+  });
+};
+
 </script>
 </body>
 </html>

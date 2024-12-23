@@ -4,57 +4,80 @@
     <meta charset="UTF-8">
     <title>Öğretmen Listesi</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cosmo/bootstrap.min.css" />
-    <style>
-        body {
-          background-color: #f8f9fa;
-        }
-        .container {
-          background-color: #ffffff;
-          padding: 30px;
-          border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        table {
-          margin-top: 20px;
-          border-collapse: collapse;
-        }
-        th, td {
-          padding: 12px 15px;
-          text-align: center;
-        }
-        th {
-          background-color: #007bff;
-          color: white;
-        }
-        td {
-          background-color: #f1f1f1;
-          border-bottom: 1px solid #ddd;
-        }
-        h2 {
-          color: #007bff;
-          text-align: center;
-          margin-bottom: 30px;
-        }
 
-        .back-btn {
-          margin-top: 30px;
-          display: block;
-          width: 200px;
-          margin-left: auto;
-          margin-right: auto;
-          text-align: center;
-          padding: 10px;
-          background-color: #007bff;
-          color: white;
-          border-radius: 5px;
-          text-decoration: none;
-        }
-
-        .back-btn:hover {
-          background-color: #0056b3;
-        }
-    </style>
 </head>
+<style>
+    body {
+      background-color: #f4f4f9;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .container {
+      margin-top: 50px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .alert {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f44336;
+      color: white;
+      border-radius: 5px;
+    }
+
+    .back-btn {
+      margin-top: 30px;
+      display: block;
+      width: 200px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background-color: #0056b3;
+    }
+
+</style>
 <body>
 <div class="container mt-5">
     <h2>Öğretmen Listesi</h2>
