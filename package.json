@@ -2,7 +2,7 @@
   "name": "studentmanagementapp",
   "version": "1.0.0",
   "description": "StudentManagementApp\r Proje Tanımı:",
-  "main": "login.js",
+  "main": "login.html",
   "scripts": {
     "start": "live-server"
   },
