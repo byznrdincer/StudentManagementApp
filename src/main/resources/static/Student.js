@@ -5,7 +5,6 @@ const MAX_COURSES = 5;
 let currentCourseCount = 0;
 
 // Batch verilerini çek
-// Ders gruplarını çek
 async function fetchBatches() {
     try {
         const response = await fetch('http://localhost:8081/api/v1/batch/getAllBatches');
@@ -110,6 +109,8 @@ async function fetchEnrollments() {
         }
 
         const enrollments = await response.json();
+        console.log('Kayıtlar:', enrollments);  // API yanıtını burada konsola yazdırıyoruz
+
         const enrollmentsInfoContent = document.getElementById('enrollmentsInfoContent');
         enrollmentsInfoContent.innerHTML = '';
 
@@ -121,6 +122,9 @@ async function fetchEnrollments() {
             infoRow.innerHTML = `
                 <div class="col-md-6">
                     <strong>Ders Adı:</strong> ${enrollment.batchName}
+                </div>
+                <div class="col-md-6">
+                    <strong>Kayıt Id:</strong> ${enrollment.enrollid} <!-- Bu kısmı kontrol et -->
                 </div>
                 <div class="col-md-6">
                     <strong>Katılım Tarihi:</strong> ${enrollment.joindate}
@@ -137,14 +141,6 @@ async function fetchEnrollments() {
         showMessage('Bir hata oluştu. Lütfen tekrar deneyin.', 'danger');
     }
 }
-function goBack() {
-    if (document.referrer) {
-        window.history.back();
-    } else {
-        window.location.href = '/'; // Eğer önceki sayfa yoksa, ana sayfaya yönlendir
-    }
-}
-
 
 // Ders kaydı yap
 document.getElementById('enrollmentForm').addEventListener('submit', async (e) => {
