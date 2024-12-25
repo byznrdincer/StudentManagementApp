@@ -4,62 +4,61 @@
   <meta charset="UTF-8">
   <title>Öğrenci Listesi</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/cosmo/bootstrap.min.css" />
-
 </head>
 <style>
   body {
       background-color: #f4f4f9;
       font-family: 'Arial', sans-serif;
-    }
+  }
 
-    .container {
+  .container {
       margin-top: 50px;
       background-color: #fff;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
+  }
 
-    h2 {
+  h2 {
       text-align: center;
       margin-bottom: 30px;
       color: #333;
-    }
+  }
 
-    table {
+  table {
       width: 100%;
       margin-top: 20px;
       border-collapse: collapse;
-    }
+  }
 
-    th, td {
+  th, td {
       padding: 10px;
       text-align: center;
       border: 1px solid #ddd;
-    }
+  }
 
-    th {
+  th {
       background-color: #007bff;
       color: white;
-    }
+  }
 
-    tr:nth-child(even) {
+  tr:nth-child(even) {
       background-color: #f9f9f9;
-    }
+  }
 
-    tr:hover {
+  tr:hover {
       background-color: #f1f1f1;
-    }
+  }
 
-    .alert {
+  .alert {
       margin-top: 20px;
       padding: 10px;
       background-color: #f44336;
       color: white;
       border-radius: 5px;
-    }
+  }
 
-    .back-btn {
+  .back-btn {
       margin-top: 30px;
       display: block;
       width: 200px;
@@ -71,11 +70,24 @@
       color: white;
       border-radius: 5px;
       text-decoration: none;
-    }
+  }
 
-    .back-btn:hover {
+  .back-btn:hover {
       background-color: #0056b3;
-    }</style>
+  }
+
+  .delete-btn {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+  }
+
+  .delete-btn:hover {
+      background-color: #d32f2f;
+  }
+</style>
 <body>
 <div class="container mt-5">
   <h2>Öğrenci Listesi</h2>
@@ -86,6 +98,7 @@
       <th>Öğrenci Adı</th>
       <th>Adres</th>
       <th>Telefon</th>
+      <th>İşlem</th>
     </tr>
     </thead>
     <tbody id="studentsList">
@@ -118,6 +131,7 @@
           <td>${student.studentName}</td>
           <td>${student.address}</td>
           <td>${student.phone}</td>
+          <td><button class="delete-btn" onclick="deleteStudent(${student.studentId})">Sil</button></td>
         `;
         studentsList.appendChild(row);
       });
@@ -129,6 +143,26 @@
       errorMessage.style.display = 'block';
     });
   };
+
+  function deleteStudent(studentId) {
+    fetch(`http://localhost:8081/api/v1/student/delete/${studentId}`, {
+        method: 'DELETE',
+    })
+    .then(response => response.json()) // JSON yanıtını işliyoruz
+    .then(data => {
+        if (data.message === "Öğrenci silindi!") {
+            alert('Öğrenci başarıyla silindi');
+            window.location.reload(); // Sayfayı yenileyerek güncellenmiş listeyi göster
+        } else {
+            alert('Öğrenci silinirken bir hata oluştu: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Hata:', error);
+        alert('Öğrenci silinirken bir hata oluştu: ' + error.message);
+    });
+}
+
 </script>
 </body>
 </html>

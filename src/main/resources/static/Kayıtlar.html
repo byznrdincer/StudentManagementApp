@@ -4,81 +4,93 @@
     <meta charset="UTF-8">
     <title>Kayıtlar Listesi</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/cosmo/bootstrap.min.css" />
-
-</head>
-<style>
-    body {
-          background-color: #f4f4f9;
-          font-family: 'Arial', sans-serif;
+    <style>
+        body {
+            background-color: #f4f4f9;
+            font-family: 'Arial', sans-serif;
         }
 
         .container {
-          margin-top: 50px;
-          background-color: #fff;
-          padding: 20px;
-          border-radius: 10px;
-          box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
 
         h2 {
-          text-align: center;
-          margin-bottom: 30px;
-          color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
         }
 
         table {
-          width: 100%;
-          margin-top: 20px;
-          border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
         }
 
         th, td {
-          padding: 10px;
-          text-align: center;
-          border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
         }
 
         th {
-          background-color: #007bff;
-          color: white;
+            background-color: #007bff;
+            color: white;
         }
 
         tr:nth-child(even) {
-          background-color: #f9f9f9;
+            background-color: #f9f9f9;
         }
 
         tr:hover {
-          background-color: #f1f1f1;
+            background-color: #f1f1f1;
         }
 
         .alert {
-          margin-top: 20px;
-          padding: 10px;
-          background-color: #f44336;
-          color: white;
-          border-radius: 5px;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f44336;
+            color: white;
+            border-radius: 5px;
         }
 
         .back-btn {
-          margin-top: 30px;
-          display: block;
-          width: 200px;
-          margin-left: auto;
-          margin-right: auto;
-          text-align: center;
-          padding: 10px;
-          background-color: #007bff;
-          color: white;
-          border-radius: 5px;
-          text-decoration: none;
+            margin-top: 30px;
+            display: block;
+            width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
         }
 
         .back-btn:hover {
-          background-color: #0056b3;
+            background-color: #0056b3;
         }
 
-</style>
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+            color: white;
+            padding: 5px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
 <body>
+
 <div class="container mt-5">
     <h2>Kayıtlar Listesi</h2>
     <table class="table">
@@ -89,7 +101,7 @@
             <th>Öğrenci Numarası</th>
             <th>DERS Adı</th>
             <th>Başlangıç Tarihi</th>
-
+            <th>İşlemler</th>
         </tr>
         </thead>
         <tbody id="enrollmentsList">
@@ -104,36 +116,57 @@
 
 <script>
     window.onload = function() {
-      fetch('http://localhost:8081/api/v1/enrollment/getAllEnrollments', {
-        method: 'GET',
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Ağ isteği başarısız oldu');
-        }
-        return response.json();
-      })
-      .then(data => {
-        let enrollmentsList = document.getElementById('enrollmentsList');
-        data.forEach(enrollment => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${enrollment.enrollid}</td>
-            <td>${enrollment.studentName}</td>
-            <td>${enrollment.studentId}</td>
-            <td>${enrollment.batchName}</td>
-            <td>${enrollment.joindate}</td>
-          `;
-          enrollmentsList.appendChild(row);
+        fetch('http://localhost:8081/api/v1/enrollment/getAllEnrollments', {
+            method: 'GET',
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ağ isteği başarısız oldu');
+            }
+            return response.json();
+        })
+        .then(data => {
+            let enrollmentsList = document.getElementById('enrollmentsList');
+            data.forEach(enrollment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${enrollment.enrollid}</td>
+                    <td>${enrollment.studentName}</td>
+                    <td>${enrollment.studentId}</td>
+                    <td>${enrollment.batchName}</td>
+                    <td>${enrollment.joindate}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteEnrollment(${enrollment.enrollid})">Sil</button>
+                    </td>
+                `;
+                enrollmentsList.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Hata:', error);
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = 'Kayıtlar çekilirken bir hata oluştu: ' + error.message;
+            errorMessage.style.display = 'block';
         });
-      })
-      .catch(error => {
-        console.error('Hata:', error);
-        const errorMessage = document.getElementById('errorMessage');
-        errorMessage.textContent = 'Kayıtlar çekilirken bir hata oluştu: ' + error.message;
-        errorMessage.style.display = 'block';
-      });
     };
+
+    // Silme işlemi
+    function deleteEnrollment(enrollid) {
+        fetch(`http://localhost:8081/api/v1/enrollment/delete/${enrollid}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Silme işlemi başarısız');
+            }
+            alert('Kayıt başarıyla silindi');
+            location.reload();  // Sayfayı yenileyerek silinen kaydın listeden kaldırılmasını sağlar
+        })
+        .catch(error => {
+            alert('Silme işlemi sırasında bir hata oluştu: ' + error.message);
+        });
+    }
 </script>
+
 </body>
 </html>
