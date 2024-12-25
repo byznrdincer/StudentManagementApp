@@ -147,6 +147,9 @@ async function fetchEnrollments() {
                     <div class="col-md-6">
                         <strong>Katılım Tarihi:</strong> ${enrollment.joindate}
                     </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-danger" onclick="deleteEnrollment(${enrollment.enrollid})">Sil</button>
+                    </div>
                 `;
                 enrollmentsInfoContent.appendChild(infoRow);
             });
@@ -206,6 +209,27 @@ document.getElementById('enrollmentForm').addEventListener('submit', async (e) =
         showMessage('Bir hata oluştu. Lütfen tekrar deneyin.', 'danger');
     }
 });
+
+// Kayıt silme fonksiyonu
+async function deleteEnrollment(enrollId) {
+    try {
+        const response = await fetch(`http://localhost:8081/api/v1/enrollment/delete/${enrollId}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            showMessage('Kayıt başarıyla silindi.', 'success');
+            currentCourseCount--; // Ders kaydını sildikten sonra mevcut ders sayısını güncelle
+            fetchEnrollments(); // Kayıtlar listesini yeniden yükle
+        } else {
+            const errorText = await response.text();
+            showMessage('Kayıt silinirken bir hata oluştu: ' + errorText, 'danger');
+        }
+    } catch (error) {
+        console.error('Error deleting enrollment:', error);
+        showMessage('Bir hata oluştu. Lütfen tekrar deneyin.', 'danger');
+    }
+}
 
 // Sayfa yüklendiğinde ders gruplarını ve gerekli verileri çek
 window.onload = function () {
