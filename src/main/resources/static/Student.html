@@ -6,6 +6,12 @@
   <title>Öğrenci Ders Kaydı</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="Student.css">
+  <style>
+    /* Mesaj alanı stili */
+    #messageContainer {
+        margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
 
@@ -13,14 +19,14 @@
   <h1>Öğrenci Ders Kaydı</h1>
 
   <!-- Mesajlar -->
-  <div id="messageContainer"></div> <!-- Mesajlar burada görünecek -->
+  <div id="messageContainer" style="display: none;"></div> <!-- Mesajlar burada görünecek -->
 
   <!-- Öğrenci ID Girişi -->
   <div class="form-group">
-    <label for="studentId">Öğrenci ID:</label>
+    <label for="studentId">Öğrenci ID Doğrula :</label>
     <input type="text" class="form-control" id="studentId" placeholder="Öğrenci ID girin">
   </div>
-  <button class="btn btn-primary" onclick="fetchStudentDetails()">Öğrenci Bilgilerini Getir</button>
+  <button class="btn btn-primary" onclick="fetchStudentDetails()">Öğrenci Bilgilerini Güncelle</button>
 
   <!-- Öğrenci Bilgileri -->
   <div id="studentInfo" class="mt-4" style="display: none;">
@@ -36,27 +42,32 @@
 
   <!-- Kayıtlı Dersler -->
   <div id="enrollmentsInfo" class="mt-4" style="display: none;">
-    <h3>Kayıtlı Dersler</h3>
+    <h3>Kayıtlı Seçmeli Dersler</h3>
     <div id="enrollmentsInfoContent"></div>
 
     <!-- Yeni Ders Kaydı -->
-    <div id="newEnrollmentForm" class="mt-4" style="display: block;">
+    <div id="newEnrollmentForm" class="mt-4">
       <h4>Yeni Ders Kaydı</h4>
-      <form id="enrollmentForm">
+      <form id="enrollmentForm" onsubmit="event.preventDefault(); handleEnrollment();">
         <div class="form-group">
           <label for="courseSelect">Ders Seçin:</label>
           <select class="form-control" id="courseSelect"></select>
         </div>
-        <button type="submit" class="btn btn-success">Ders Kaydı Yap</button>
+        <button type="submit" class="btn btn-success">Ders Ekle </button>
       </form>
     </div>
   </div>
 
-  <!-- Geri Dön Butonu -->
-  <button class="btn btn-secondary mt-4" onclick="goBack()">Geri Dön</button>
+  <!-- Kaydet ve Çıkış Butonları -->
+  <div class="mt-4">
+    <button class="btn btn-success group" onclick="saveEnrollment()">Dersleri Kaydet</button></div>
+    <div><button class="btn btn-secondary mt-4" onclick="goBack()">Çıkış</button>
 </div>
 
 <!-- Bootstrap ve jQuery -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script defer src="Student.js"></script>
 
 </body>

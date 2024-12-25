@@ -8,48 +8,141 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <style>
-    body {
-   background-color: #fafafa; /* Çok açık gri */
-   font-family: 'Roboto', sans-serif; /* Modern ve okunabilir font */
-   margin: 0;
-   padding: 0;
+    /* Genel Stil Ayarları */
+ body {
+     font-family: 'Arial', sans-serif;
+     background: linear-gradient(to right, #6a11cb, #2575fc); /* Modern degrade arka plan */
+     color: #333; /* Yazı rengi */
+     margin: 0;
+     padding: 0;
  }
 
+ /* Ana Konteyner */
  .container {
-   background-color: #ffffff;
-   padding: 30px;
-   border-radius: 16px; /* Daha yuvarlak köşeler */
-   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Hafif gölge */
-   max-width: 900px;
-   margin: 50px auto;
-   transition: transform 0.3s ease; /* Hover efekti */
+     background-color: rgba(255, 255, 255, 0.9); /* Şeffaf beyaz arka plan */
+     border-radius: 15px; /* Yuvarlak köşeler */
+     padding: 30px;
+     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Hafif gölge */
+     max-width: 800px;
+     margin: 50px auto;
  }
 
- .container:hover {
-   transform: scale(1.02); /* Hover efekti: büyüme */
+ /* Başlıklar */
+ h2, h4 {
+     color: #2c3e50; /* Koyu mavi tonları */
+     text-align: center;
+     margin-bottom: 20px;
+     font-weight: 600;
  }
 
  h2 {
-   color: #333333; /* Koyu gri tonları */
-   font-size: 2.5rem; /* Daha büyük başlık */
-   text-align: center;
-   margin-bottom: 20px;
-   font-weight: 500;
+     font-size: 2.2em;
  }
 
+ h4 {
+     font-size: 1.5em;
+ }
+
+ /* Form ve Input Alanları */
+ .form-group {
+     margin-bottom: 20px;
+ }
+
+ label {
+     font-size: 1.1em;
+     color: #34495e; /* Başlık renk tonu */
+     font-weight: bold;
+ }
+
+ input[type="text"], input[type="password"] {
+     width: 100%;
+     padding: 10px;
+     border-radius: 8px;
+     border: 2px solid #ddd;
+     font-size: 1em;
+     margin-top: 5px;
+     transition: all 0.3s ease;
+ }
+
+ input[type="text"]:focus, input[type="password"]:focus {
+     border-color: #3498db; /* Odaklanma mavi kenarlık */
+     outline: none;
+     box-shadow: 0 0 10px rgba(52, 152, 219, 0.5); /* Mavi parıltı */
+ }
+
+ /* Modern Buton Stilleri */
  button {
-   background-color: #007bff; /* Mavi buton */
-   color: #ffffff;
-   border: none;
-   padding: 12px 25px;
-   border-radius: 8px;
-   cursor: pointer;
-   font-size: 1rem;
-   transition: background-color 0.3s ease; /* Buton hover efekti */
+     background: linear-gradient(135deg, #6a11cb, #2575fc); /* Modern degrade */
+     color: white;
+     padding: 12px 24px; /* Buton iç dolgunluğu */
+     border-radius: 12px;
+     border: none;
+     font-size: 1em;
+     font-weight: bold;
+     cursor: pointer;
+     text-transform: uppercase;
+     transition: all 0.3s ease;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
  }
 
+ /* Buton Hover Durumu */
  button:hover {
-   background-color: #0056b3; /* Buton hover efekti */
+     background: linear-gradient(135deg, #2575fc, #6a11cb); /* Ters degrade */
+     transform: translateY(-2px);
+     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+ }
+
+ /* Buton Aktif Durumu */
+ button:active {
+     transform: translateY(0); /* Tıklama efekti */
+     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+ }
+
+ /* İkinci Buton Stili */
+ button.secondary {
+     background: linear-gradient(135deg, #95a5a6, #7f8c8d); /* Gri degrade */
+ }
+
+ button.secondary:hover {
+     background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+ }
+
+ /* Buton Bağlantı */
+ button.btn-link {
+     background: none;
+     color: #2575fc;
+     border: none;
+     padding: 0;
+     font-size: 1em;
+     font-weight: bold;
+     text-decoration: underline;
+     cursor: pointer;
+ }
+
+ button.btn-link:hover {
+     color: #6a11cb;
+ }
+
+ /* Form Konteyneri */
+ #studentForm, #teacherForm, #studentRegisterForm, #teacherRegisterForm {
+     display: none;
+     padding-top: 20px;
+ }
+
+ /* Mobil Uyumluluk */
+ @media (max-width: 768px) {
+     .container {
+         padding: 20px;
+         margin: 20px;
+     }
+
+     h2 {
+         font-size: 1.8em;
+     }
+
+     button {
+         font-size: 0.9em;
+     }
  }
 
 </style>

@@ -1,3 +1,5 @@
+/* Genel stil ayarları */
+/* Genel Stil Ayarları */
 body {
     font-family: 'Arial', sans-serif;
     background: linear-gradient(to right, #6a11cb, #2575fc); /* Arka plan rengi */
@@ -9,7 +11,7 @@ body {
 .container {
     background-color: rgba(255, 255, 255, 0.9); /* Hafif şeffaf beyaz arka plan */
     border-radius: 15px;
-    padding: 30px;
+    padding: 25px; /* Daha az dolgu */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     max-width: 800px;
     margin: 50px auto;
@@ -20,35 +22,35 @@ h1, h3, h4 {
 }
 
 h1 {
-    font-size: 2.5em;
+    font-size: 2em; /* Başlık boyutunu küçült */
     text-align: center;
     margin-bottom: 20px;
     font-weight: 700;
 }
 
 h3, h4 {
-    font-size: 1.5em;
+    font-size: 1.3em; /* Başlık boyutunu küçült */
     margin-top: 20px;
     font-weight: 600;
 }
 
 /* Form ve input alanları */
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Daha az boşluk */
 }
 
 label {
-    font-size: 1.1em;
+    font-size: 1em; /* Etiket boyutunu küçült */
     color: #34495e;
     font-weight: 600;
 }
 
 input[type="text"], select {
     width: 100%;
-    padding: 10px;
+    padding: 8px; /* Daha az iç dolgu */
     border-radius: 8px;
     border: 2px solid #ddd;
-    font-size: 1em;
+    font-size: 0.9em; /* Yazı boyutunu küçült */
     transition: all 0.3s ease;
 }
 
@@ -58,30 +60,51 @@ input[type="text"]:focus, select:focus {
     box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
 }
 
-/* Modern Buton stilizasyonu */
+/* Modern Buton Stilleri */
 button {
-    background-color: #3498db; /* Mavi renk */
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Modern degrade */
     color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
+    padding: 10px 20px; /* Buton içi dolgu küçült */
+    border-radius: 12px; /* Daha yuvarlak köşeler */
     border: none;
-    font-size: 1.1em;
+    font-size: 1em; /* Buton yazı boyutunu küçült */
+    font-weight: bold; /* Modern bir görünüm için kalın yazı */
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: all 0.3s ease; /* Geçiş efekti */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hafif gölge efekti */
+    text-transform: uppercase; /* Büyük harf görünümü */
 }
 
+/* Buton hover durumu */
 button:hover {
-    background-color: #2980b9;
-    transform: scale(1.05);
+    background: linear-gradient(135deg, #2575fc, #6a11cb); /* Ters degrade efekti */
+    transform: translateY(-2px); /* Hover durumunda yükselme efekti */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Gölgede artış */
 }
 
+/* Buton aktif durumu */
 button:active {
-    background-color: #1c5d84;
+    transform: translateY(0); /* Aktif durumunda sıfır pozisyon */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Daha düşük gölge */
+}
+
+/* İkinci buton seçenekleri için örnek */
+button.secondary {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d); /* Gri degrade */
+}
+
+button.secondary:hover {
+    background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+}
+
+/* Buton grubu stili */
+button.group {
+    margin-right: 10px; /* Butonlar arası mesafe */
 }
 
 /* Kayıtlı dersler ve öğrenci bilgileri */
 #studentInfoContent, #enrollmentsInfoContent {
-    padding: 20px;
+    padding: 15px; /* Daha az iç dolgu */
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #f9f9f9;
@@ -94,66 +117,26 @@ button:active {
 }
 
 .row .col-md-6 {
-    font-size: 1.1em;
+    font-size: 1em; /* Font boyutunu küçült */
     color: #2c3e50;
 }
 
 #newEnrollmentForm {
     margin-top: 30px;
-    padding: 20px;
+    padding: 15px; /* Daha az iç dolgu */
     background-color: #f1f1f1;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-#courseSelect {
-    font-size: 1.1em;
-    padding: 10px;
-}
-
-/* Hata mesajı */
-#noRecordsMessage {
-    color: #e74c3c;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 20px;
-    font-size: 1.2em;
-}
-
-button.secondary {
-    background-color: #7f8c8d;
-}
-
-button.secondary:hover {
-    background-color: #95a5a6;
-}
-
-/* Mobil uyum */
-@media (max-width: 768px) {
-    .container {
-        padding: 20px;
-        margin-top: 20px;
-    }
-
-    h1 {
-        font-size: 2em;
-    }
-}
 /* Zorunlu Dersler için stil */
 #mandatoryCourses {
     margin-top: 30px;
-    padding: 20px;
+    padding: 15px; /* Daha az iç dolgu */
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
-}
-
-#mandatoryCourses h4 {
-    font-size: 1.5em;
-    color: #2c3e50;
-    font-weight: 600;
-    margin-bottom: 15px;
 }
 
 #mandatoryCourses ul {
@@ -163,7 +146,7 @@ button.secondary:hover {
 }
 
 #mandatoryCourses li {
-    font-size: 1.1em;
+    font-size: 1em; /* Font boyutunu küçült */
     color: #34495e;
     margin-bottom: 10px;
 }
@@ -174,11 +157,23 @@ button.secondary:hover {
     color: #2ecc71; /* Yeşil renk, onay simgesi için */
 }
 
-#mandatoryCourses .info {
-    font-size: 1em;
-    color: #7f8c8d;
-    margin-top: 10px;
+/* Hata mesajı */
+#noRecordsMessage {
+    color: #e74c3c;
+    font-weight: bold;
     text-align: center;
+    margin-top: 20px;
+    font-size: 1em; /* Yazı boyutunu küçült */
 }
 
+/* Mobil uyum */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        margin-top: 20px;
+    }
 
+    h1 {
+        font-size: 1.8em; /* Başlık boyutunu küçült */
+    }
+}

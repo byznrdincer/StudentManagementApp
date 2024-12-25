@@ -1,11 +1,12 @@
-// Öğrencinin maksimum ders kayıt sayısını kontrol etmek için bir değişken
-const MAX_COURSES = 5;
+const MAX_COURSES = 5; // Maksimum ders sayısı
+let currentCourseCount = 0; // Öğrencinin mevcut kayıtlı ders sayısını takip eden değişken
+let selectedCourses = []; // Seçilen dersleri tutacak dizi
+const mandatoryCourses = ["Matematık", "Bilgisayar", "Fizik"]; // Zorunlu dersler
 
-// Öğrencinin mevcut kayıtlı ders sayısını takip etmek için bir değişken
-let currentCourseCount = 0;
-
-// Zorunlu dersler
-const mandatoryCourses = ["Matematik", "Bilgisayar", "Fizik"];
+// Sayfa yüklendiğinde ders gruplarını ve gerekli verileri çek
+window.onload = function () {
+    fetchBatches();
+};
 
 // Batch verilerini çek
 async function fetchBatches() {
@@ -33,6 +34,8 @@ async function fetchBatches() {
             option.textContent = batch.batchname;
             batchSelect.appendChild(option);
         });
+
+        updateCourseSelectOptions(); // Başlangıçta seçenekleri güncelle
     } catch (error) {
         console.error('Error fetching batches:', error);
         alert('Batch listesi yüklenirken bir hata oluştu.');
@@ -106,7 +109,7 @@ function displayMandatoryCourses() {
     });
 }
 
-// Ders kayıtlarını çek
+// Ders kayıtlarını çek (devam)
 async function fetchEnrollments() {
     const studentId = document.getElementById('studentId').value;
     if (!studentId) {
@@ -125,7 +128,6 @@ async function fetchEnrollments() {
         }
 
         const enrollments = await response.json();
-
         console.log('Kayıtlar:', enrollments);
 
         const enrollmentsInfoContent = document.getElementById('enrollmentsInfoContent');
@@ -133,6 +135,7 @@ async function fetchEnrollments() {
 
         if (Array.isArray(enrollments) && enrollments.length > 0) {
             currentCourseCount = enrollments.length;
+            selectedCourses = enrollments.map(enrollment => enrollment.batchId); // Seçilen dersleri güncelle
 
             enrollments.forEach(enrollment => {
                 const infoRow = document.createElement('div');
@@ -160,6 +163,7 @@ async function fetchEnrollments() {
         }
 
         document.getElementById('newEnrollmentForm').style.display = 'block';
+        updateCourseSelectOptions(); // Mevcut seçimi güncelle
 
     } catch (error) {
         console.error('Error fetching enrollments:', error);
@@ -167,7 +171,7 @@ async function fetchEnrollments() {
     }
 }
 
-// Ders kaydı yap
+// Ders kaydını yap
 document.getElementById('enrollmentForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const studentId = document.getElementById('studentId').value;
@@ -178,6 +182,13 @@ document.getElementById('enrollmentForm').addEventListener('submit', async (e) =
         return;
     }
 
+    // Ders zaten seçilmişse, uyarı ver
+    if (selectedCourses.includes(batchId)) {
+        showMessage('Bu dersi daha önce kaydettiniz.', 'warning');
+        return;
+    }
+
+    // Maksimum ders sayısına ulaşılmışsa, uyarı ver
     if (currentCourseCount >= MAX_COURSES) {
         showMessage('Maksimum 5 ders seçebilirsiniz.', 'warning');
         return;
@@ -199,7 +210,10 @@ document.getElementById('enrollmentForm').addEventListener('submit', async (e) =
 
         if (response.ok) {
             showMessage('Ders kaydınız başarıyla yapıldı!', 'success');
+            selectedCourses.push(batchId);  // Ders kaydını yap ve listeye ekle
             currentCourseCount++;
+            fetchEnrollments(); // Kayıtlar listesini güncelle
+            updateCourseSelectOptions(); // Seçenekleri güncelle
         } else {
             const errorText = await response.text();
             showMessage('Ders kaydı yapılırken bir hata oluştu: ' + errorText, 'danger');
@@ -221,6 +235,7 @@ async function deleteEnrollment(enrollId) {
             showMessage('Kayıt başarıyla silindi.', 'success');
             currentCourseCount--; // Ders kaydını sildikten sonra mevcut ders sayısını güncelle
             fetchEnrollments(); // Kayıtlar listesini yeniden yükle
+            updateCourseSelectOptions(); // Seçenekleri güncelle
         } else {
             const errorText = await response.text();
             showMessage('Kayıt silinirken bir hata oluştu: ' + errorText, 'danger');
@@ -231,20 +246,36 @@ async function deleteEnrollment(enrollId) {
     }
 }
 
-// Sayfa yüklendiğinde ders gruplarını ve gerekli verileri çek
-window.onload = function () {
-    fetchBatches();
-};
+// Seçenekleri güncelleme fonksiyonu
+function updateCourseSelectOptions() {
+    const batchSelect = document.getElementById('courseSelect');
+    const options = batchSelect.getElementsByTagName('option');
 
+    for (let i = 1; i < options.length; i++) { // Birinci seçenek 'Ders Seçin' olduğu için 1'den başlıyoruz
+        const option = options[i];
+        if (selectedCourses.includes(option.value)) {
+            option.disabled = true; // Eğer ders seçilmişse, bu seçeneği devre dışı bırak
+        } else {
+            option.disabled = false; // Aksi halde seçilebilir yap
+        }
+    }
+}
+// Ders kayıtlarını kaydet
+function saveEnrollment() {
+    showMessage("Dersler kaydedildi.", "success");
+}
+
+
+// Geri dön
+function goBack() {
+    window.history.back();
+}
 // Geribildirim mesajları göstermek için yardımcı fonksiyon
 function showMessage(message, type) {
     const messageContainer = document.getElementById('messageContainer');
     messageContainer.innerHTML = `<div class="alert alert-${type}" role="alert">${message}</div>`;
-}
-
-// Geri dön butonu
-function goBack() {
-    document.getElementById('studentInfo').style.display = 'none';
-    document.getElementById('enrollmentsInfo').style.display = 'none';
-    document.getElementById('newEnrollmentForm').style.display = 'none';
+    messageContainer.style.display = 'block';
+    setTimeout(() => {
+        messageContainer.style.display = 'none';
+    }, 3000); // 3 saniye sonra mesajı gizle
 }
